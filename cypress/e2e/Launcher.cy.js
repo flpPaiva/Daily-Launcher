@@ -1,4 +1,5 @@
 const formValue = require("../../formValue.js");
+const { isEmpty } = require("../tools/tools.js");
 
 describe("Launcher", () => {
   it.only("Set Diarias", () => {
@@ -8,6 +9,18 @@ describe("Launcher", () => {
     const type = formValue.type;
 
     cy.task("readPDF", { fileName }).then((data) => {
+      if (isEmpty(data.date)) {
+        throw new Error("Data não encontrada no PDF");
+      }
+
+      if (isEmpty(data.code)) {
+        throw new Error("Código não encontrado no PDF");
+      }
+
+      if (isEmpty(data.vlTotal)) {
+        throw new Error("Valor total não encontrado no PDF");
+      }
+
       // Acessa o Mantis
       cy.visit("https://mantis-br.nttdata-solutions.com/app/#/login");
 
