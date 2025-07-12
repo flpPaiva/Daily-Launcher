@@ -11,19 +11,20 @@ module.exports = defineConfig({
       on("task", {
         readPDF({ fileName }) {
           const filePath = path.join(__dirname, "cypress/pdfs", fileName);
-          const dataBuffer = fs.readFileSync(filePath);
 
-          return pdf(dataBuffer)
-            .then((data) => {
+          try {
+            const dataBuffer = fs.readFileSync(filePath);
+
+            return pdf(dataBuffer).then((data) => {
               const code = data.text.match(/Número:\s*(.*)/)?.[1].split(" ")[0];
               const vlTotal = data.text.match(/Valor pago R\$:\s*(.*)/)?.[1];
               const date = data.text.match(/Emissão:\s*(.*)/)?.[1].split(" ")[0];
 
               return { code, vlTotal, date };
-            })
-            .catch(() => {
-              return null;
             });
+          } catch (error) {
+            throw new Error(`Arquivo não encontrado: ${filePath}`);
+          }
         },
       });
     },
