@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "cypress:open": "npx cypress open"
+  },
+  "dependencies": {
+    "glob": "^8.1.0",
+    "glob-promise": "^6.0.7",
+    "pdf-parse": "^1.1.1",
+    "puppeteer": "^24.12.1",
+    "terser": "^5.39.0"
+  },
+  "devDependencies": {
+    "cypress": "^14.5.0",
+    "cypress-file-upload": "^5.0.8"
+  }
+}
