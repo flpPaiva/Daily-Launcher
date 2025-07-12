@@ -1,8 +1,26 @@
 const formValue = require("../../formValue.js");
 const { isEmpty } = require("../tools/tools.js");
 
+function setCredential() {
+  // Inserir usuário e senha
+  // e Submete o formulário
+  cy.fixture("credentials").then((credentials) => {
+    if (isEmpty(credentials.user)) {
+      throw new Error("Usuário não encontrado no arquivo de credentials.json");
+    }
+
+    if (isEmpty(credentials.password)) {
+      throw new Error("Senha não encontrada no arquivo de credentials.json");
+    }
+
+    cy.get("#username").type(credentials.user);
+    cy.get("#password").type(credentials.password);
+    cy.get("#password").type("{enter}");
+  });
+}
+
 describe("Launcher", () => {
-  it.only("Set Diarias", () => {
+  it("Set Diárias", () => {
     const fileName = formValue.fileName;
     const priority = formValue.priority;
     const description = formValue.description;
@@ -24,21 +42,7 @@ describe("Launcher", () => {
       // Acessa o Mantis
       cy.visit("https://mantis-br.nttdata-solutions.com/app/#/login");
 
-      // Inserir usuário e senha
-      // e Submete o formulário
-      cy.fixture("credentials").then((credentials) => {
-        if (isEmpty(credentials.user)) {
-          throw new Error("Usuário não encontrado no arquivo de credentials.json");
-        }
-
-        if (isEmpty(credentials.password)) {
-          throw new Error("Senha não encontrada no arquivo de credentials.json");
-        }
-
-        cy.get("#username").type(credentials.user);
-        cy.get("#password").type(credentials.password);
-        cy.get("#password").type("{enter}");
-      });
+      setCredential();
 
       // Acessa o menu de lançamentos
       cy.get("span.ng-star-inserted > .mat-mdc-menu-trigger").click();
@@ -79,4 +83,29 @@ describe("Launcher", () => {
       cy.get('input[type="file"]').selectFile("cypress/pdfs/" + fileName, { force: true });
     });
   });
+
+  false &&
+    it("Open MyActis", () => {
+      cy.visit("https://mantis-br.nttdata-solutions.com/app/#/app/9044355e-1c7e-428c-a03d-3c2d4cf3ed86");
+
+      setCredential();
+
+      cy.wait(4000);
+
+      cy.window().then((win) => {
+        win.removerClasses = function (_class) {
+          const elementos = win.document.querySelectorAll("." + _class);
+          elementos.forEach((el) => el.classList.remove(_class));
+        };
+
+        win.removerDisableds = function () {
+          const elementos = win.document.querySelectorAll(`[disabled="true"]`);
+          elementos.forEach((el) => el.removeAttribute(`disabled`));
+        };
+
+        // Executa as funções no contexto da página
+        win.removerClasses("disabled-node");
+        win.removerDisableds();
+      });
+    });
 });
