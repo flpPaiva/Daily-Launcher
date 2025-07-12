@@ -1,11 +1,11 @@
+const formValue = require("../../formValue.js");
+
 describe("Launcher", () => {
   it.only("Set Diarias", () => {
-    const fileName = "1.pdf";
-    const priority = "Média";
-    const description = "Refeição";
-    const type = "Meal";
-    // const type = "Combustível";
-    // const type = "Mercado";
+    const fileName = formValue.fileName;
+    const priority = formValue.priority;
+    const description = formValue.description;
+    const type = formValue.type;
 
     cy.task("readPDF", { fileName }).then((data) => {
       // Acessa o Mantis
