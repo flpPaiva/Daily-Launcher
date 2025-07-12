@@ -27,6 +27,14 @@ describe("Launcher", () => {
       // Inserir usuário e senha
       // e Submete o formulário
       cy.fixture("credentials").then((credentials) => {
+        if (isEmpty(credentials.user)) {
+          throw new Error("Usuário não encontrado no arquivo de credentials.json");
+        }
+
+        if (isEmpty(credentials.password)) {
+          throw new Error("Senha não encontrada no arquivo de credentials.json");
+        }
+
         cy.get("#username").type(credentials.user);
         cy.get("#password").type(credentials.password);
         cy.get("#password").type("{enter}");
