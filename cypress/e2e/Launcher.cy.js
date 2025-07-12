@@ -1,5 +1,5 @@
 const formValue = require("../../formValue.js");
-const { isEmpty } = require("../tools/tools.js");
+const { isEmpty, formatTotalValue } = require("../tools/tools.js");
 
 function setCredential() {
   // Inserir usuário e senha
@@ -19,69 +19,97 @@ function setCredential() {
   });
 }
 
+function setNfeData(data) {
+  // Preenche a Data da Nfe
+  cy.get("#-from").clear({ force: true });
+  cy.get("#-from").type(data.date, { force: true });
+
+  // Preenche o Número do Documento
+  cy.get("#document-number").clear({ force: true });
+  cy.get("#document-number").type(data.code, { force: true });
+
+  const value = formatTotalValue(data.vlTotal);
+
+  // Preenche o valor da Nfe
+  cy.get("#value").clear({ force: true });
+  cy.get("#value").type(value, { force: true });
+}
+
+function logNfeDataError(data) {
+  if (isEmpty(data.code)) {
+    throw new Error(`"Número da NFe não encontrado no PDF / formValue.js`);
+  }
+
+  if (isEmpty(data.date)) {
+    throw new Error(`"Data não encontrada no PDF / formValue.js`);
+  }
+
+  if (isEmpty(data.vlTotal)) {
+    throw new Error(`"Valor Total não encontrado no PDF / formValue.js`);
+  }
+}
+
 describe("Launcher", () => {
   it("Set Diárias", () => {
     const fileName = formValue.fileName;
     const priority = formValue.priority;
     const description = formValue.description;
     const type = formValue.type;
+    const uploadFile = formValue.uploadFile;
+    let vlTotal = formValue.vlTotal;
+    let nrNFe = formValue.nrNFe;
+    let date = formValue.date;
 
-    cy.task("readPDF", { fileName }).then((data) => {
-      if (isEmpty(data.date)) {
-        throw new Error("Data não encontrada no PDF");
-      }
+    // Acessa o Mantis
+    cy.visit("https://mantis-br.nttdata-solutions.com/app/#/login");
 
-      if (isEmpty(data.code)) {
-        throw new Error("Código não encontrado no PDF");
-      }
+    setCredential();
 
-      if (isEmpty(data.vlTotal)) {
-        throw new Error("Valor total não encontrado no PDF");
-      }
+    // Acessa o menu de lançamentos
+    cy.get("span.ng-star-inserted > .mat-mdc-menu-trigger").click();
+    cy.get("#mat-menu-panel-3 > .mat-mdc-menu-content > :nth-child(3) > span.ng-star-inserted > .mat-mdc-menu-item").click();
+    cy.get(":nth-child(5) > span.ng-star-inserted > .mat-mdc-menu-item").click();
+    cy.get("#mat-menu-panel-19 > .mat-mdc-menu-content > :nth-child(1) > span.ng-star-inserted > .mat-mdc-menu-item").click();
+    cy.get(".ng-tns-c104-27 > .ng-star-inserted > .mat-mdc-menu-item > .mdc-list-item__primary-text > .menu-leaf").click();
 
-      // Acessa o Mantis
-      cy.visit("https://mantis-br.nttdata-solutions.com/app/#/login");
+    cy.wait(1000);
 
-      setCredential();
+    // Escolhe a prioridade Média
+    cy.get("mat-select#priority-select").click({ force: true });
+    cy.get("#priority-select-panel .mat-mdc-option").contains(priority).click();
 
-      // Acessa o menu de lançamentos
-      cy.get("span.ng-star-inserted > .mat-mdc-menu-trigger").click();
-      cy.get("#mat-menu-panel-3 > .mat-mdc-menu-content > :nth-child(3) > span.ng-star-inserted > .mat-mdc-menu-item").click();
-      cy.get(":nth-child(5) > span.ng-star-inserted > .mat-mdc-menu-item").click();
-      cy.get("#mat-menu-panel-19 > .mat-mdc-menu-content > :nth-child(1) > span.ng-star-inserted > .mat-mdc-menu-item").click();
-      cy.get(".ng-tns-c104-27 > .ng-star-inserted > .mat-mdc-menu-item > .mdc-list-item__primary-text > .menu-leaf").click();
+    // Adiciona a Descrição da Diária
+    cy.get("textarea#description-textarea").clear({ force: true });
+    cy.get("textarea#description-textarea").type(description, { force: true });
 
-      cy.wait(1000);
+    // Preenche o tipo de despesa
+    cy.get("mat-select#expenseType-select").click({ force: true });
+    cy.get("#expenseType-select-panel .mat-mdc-option").contains(type).click();
 
-      // Escolhe a prioridade Média
-      cy.get("mat-select#priority-select").click({ force: true });
-      cy.get("#priority-select-panel .mat-mdc-option").contains(priority).click();
+    if (uploadFile) {
+      cy.task("readPDF", { fileName }).then((data) => {
+        const dataNFe = {
+          code: nrNFe || data.code || " ",
+          date: date || data.date || " ",
+          vlTotal: vlTotal || data.vlTotal || " ",
+        };
 
-      // Adiciona a Descrição da Diária
-      cy.get("textarea#description-textarea").clear({ force: true });
-      cy.get("textarea#description-textarea").type(description, { force: true });
+        logNfeDataError(dataNFe);
+        setNfeData(dataNFe);
 
-      // Preenche a Data da Nfe
-      cy.get("#-from").clear({ force: true });
-      cy.get("#-from").type(data.date, { force: true });
+        // faz upload do arquivo PDF
+        cy.get('input[type="file"]').selectFile("cypress/pdfs/" + fileName, { force: true });
+      });
+    } else {
+      const dataNFe = {
+        code: nrNFe || " ",
+        date: date || " ",
+        vlTotal: vlTotal || " ",
+      };
 
-      // Preenche o Número do Documento
-      cy.get("#document-number").clear({ force: true });
-      cy.get("#document-number").type(data.code, { force: true });
-
-      // Preenche o tipo de despesa
-      cy.get("mat-select#expenseType-select").click({ force: true });
-      cy.get("#expenseType-select-panel .mat-mdc-option").contains(type).click();
-
-      const value = data.vlTotal.replace(/\./g, "").replace(",", ".");
-
-      // Preenche o valor da Nfe
-      cy.get("#value").clear({ force: true });
-      cy.get("#value").type(value, { force: true });
-
-      // faz upload do arquivo PDF
-      cy.get('input[type="file"]').selectFile("cypress/pdfs/" + fileName, { force: true });
-    });
+      logNfeDataError(dataNFe);
+      setNfeData(dataNFe);
+    }
   });
 
   false &&

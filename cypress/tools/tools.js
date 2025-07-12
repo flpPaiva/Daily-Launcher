@@ -13,3 +13,12 @@ export function isEmpty(value) {
 export function removeDoubleWhiteSpaces(value) {
   return value.replace(/\s+/g, " ").trim();
 }
+
+export function formatTotalValue(value) {
+  // Remove caracteres não numéricos e formata com vírgula
+  return value
+    .toString()
+    .replace(/[^0-9]/g, "")
+    .replace(/(\d{2})$/, ",$1")
+    .replace(",", ".");
+}

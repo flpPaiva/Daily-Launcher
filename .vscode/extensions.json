@@ -5,6 +5,7 @@
     "samuel-weinhardt.vscode-jsp-lang",
     "alefragnani.bookmarks",
     "pucelle.run-on-save",
-    "mathematic.vscode-pdf"
+    "mathematic.vscode-pdf",
+    "vscode-infra.image-viewer"
   ]
 }

@@ -29,7 +29,7 @@ module.exports = defineConfig({
       });
     },
     viewportWidth: 1200,
-    viewportHeight: 500,
+    viewportHeight: 800,
     chromeWebSecurity: false,
   },
 });
