@@ -4,7 +4,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Abrir Cypress",
+      "name": "Executar Launcher",
       "runtimeExecutable": "npm",
       "runtimeArgs": [
         "run",
