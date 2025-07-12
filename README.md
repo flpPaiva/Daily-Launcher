@@ -63,7 +63,7 @@ Na interface do Cypress:
 
 ## 📝 Lançamento da Nota
 
-1. Abra o arquivo `e2e/Launcher.json`
+1. Abra o arquivo `e2e/Launcher.cy.js`
 2. Atribua à variável `fileName` o nome do arquivo PDF que deseja lançar (ex: `"1.pdf"`)
 3. Salve o arquivo.
 
