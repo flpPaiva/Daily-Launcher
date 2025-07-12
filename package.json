@@ -1,6 +1,8 @@
 {
   "scripts": {
-    "cypress:open": "npx cypress open"
+    "cypress:open": "npm run set_as_unchangeable && npx cypress open",
+    "set_as_unchangeable": "git update-index --assume-unchanged cypress/fixtures/credentials.json",
+    "set_as_changeable": "git update-index --no-assume-unchanged cypress/fixtures/credentials.json"
   },
   "dependencies": {
     "glob": "^8.1.0",
