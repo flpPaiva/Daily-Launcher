@@ -73,6 +73,6 @@ O script irá automaticamente:
 - Extrair os dados necessários
 - Preencher os campos no Mantis
 
-Depois, **verifique as informações** e, se estiver tudo correto, clique em **Submeter** no Mantis.
+Depois, **verifique as informações** e, se estiver tudo correto, clique em **Salvar** no Mantis.
 
 Repita o processo com os próximos arquivos.
