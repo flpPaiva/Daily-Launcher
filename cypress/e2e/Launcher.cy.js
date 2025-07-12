@@ -4,6 +4,8 @@ describe("Launcher", () => {
     const priority = "Média";
     const description = "Refeição";
     const type = "Meal";
+    // const type = "Combustível";
+    // const type = "Mercado";
 
     cy.task("readPDF", { fileName }).then((data) => {
       // Acessa o Mantis
