@@ -1,10 +1,12 @@
 # 🚀 Daily-Launcher
 
-O **Daily-Launcher** é uma ferramenta que automatiza o processo de lançamento de diárias no sistema **Mantis**, usando arquivos PDF de notas fiscais.
+O **Daily-Launcher** é uma ferramenta que automatiza o processo de lançamento de diárias no sistema [**Mantis**](https://mantis-br.nttdata-solutions.com/app/#/login), usando arquivos PDF de notas fiscais.
 
 ## 📋 Pré-requisitos
 
-- Node.js **v20.9.0** instalado  
+- Node.js **v20.9.0** instalado
+> ℹ️ **Nota:** Este launcher foi criado baseado na exportação (impressão) da NFe do site [Nota Paraná](https://notaparana.pr.gov.br/nfprweb/Extrato). No entanto, seu leitor de PDF é agnóstico e pode ser ajustado para outros formatos. Para isso, basta alterar os parâmetros da task `readPDF` no arquivo `cypress.config.js`.
+  
   Você pode verificar sua versão com:
   ```bash
   node -v
