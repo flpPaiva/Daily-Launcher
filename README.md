@@ -77,7 +77,7 @@ Depois, **verifique as informações** e, se estiver tudo correto, clique em **S
 
 Repita o processo com os próximos arquivos.
 
-> ⚠️ **Notas Fiscais fora do padrão Nota Paraná ou em outros formatos**  
+> ⚠️ **Notas Fiscais fora do padrão Nota Paraná ou em outros formatos:**  
 > Caso sua Nota Fiscal **não tenha sido exportada do site Nota Paraná**, ou esteja em um formato diferente como `.png` ou `.jpg`, você pode utilizar o **modo manual**:  
 >
 > No arquivo `formValue.js`, defina:
