@@ -65,11 +65,11 @@ describe("Launcher", () => {
     setCredential();
 
     // Acessa o menu de lançamentos
-    cy.get("span.ng-star-inserted > .mat-mdc-menu-trigger").click();
-    cy.get("#mat-menu-panel-3 > .mat-mdc-menu-content > :nth-child(3) > span.ng-star-inserted > .mat-mdc-menu-item").click();
-    cy.get(":nth-child(5) > span.ng-star-inserted > .mat-mdc-menu-item").click();
-    cy.get("#mat-menu-panel-19 > .mat-mdc-menu-content > :nth-child(1) > span.ng-star-inserted > .mat-mdc-menu-item").click();
-    cy.get(".ng-tns-c104-27 > .ng-star-inserted > .mat-mdc-menu-item > .mdc-list-item__primary-text > .menu-leaf").click();
+    cy.get(`span:contains("Mantis")`).last().click();
+    cy.get(`span:contains("Documento")`).last().click();
+    cy.get(`span:contains("Financeiro")`).last().click();
+    cy.get(`span:contains("Solicitação")`).last().click();
+    cy.get(`span:contains("Reembolso de Diária")`).last().click();
 
     cy.wait(1000);
 
@@ -113,11 +113,16 @@ describe("Launcher", () => {
 
   false &&
     it("Open MyActis", () => {
-      cy.visit("https://mantis-br.nttdata-solutions.com/app/#/app/9044355e-1c7e-428c-a03d-3c2d4cf3ed86");
+      cy.visit("https://mantis-br.nttdata-solutions.com/app/#/login");
 
       setCredential();
 
-      cy.wait(4000);
+      cy.get(`span:contains("Mantis")`).last().click();
+      cy.get(`span:contains("Documento")`).last().click();
+      cy.get(`span:contains("Gestão de Recursos")`).last().click();
+      cy.get(`span:contains("Apontamento de Atividades")`).last().click();
+
+      cy.wait(1000);
 
       cy.window().then((win) => {
         win.removerClasses = function (_class) {

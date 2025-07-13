@@ -1,8 +1,11 @@
 {
   "scripts": {
-    "cypress:open": "npm run set_as_unchangeable && npx cypress open",
-    "set_as_unchangeable": "git update-index --assume-unchanged cypress/fixtures/credentials.json",
-    "set_as_changeable": "git update-index --no-assume-unchanged cypress/fixtures/credentials.json"
+    "cypress:open": "npm run set_credentials_as_unchangeable && npm run set_formValue_as_unchangeable && npx cypress open",
+    "set_credentials_as_unchangeable": "git update-index --assume-unchanged cypress/fixtures/credentials.json",
+    "set_credentials_as_changeable": "git update-index --no-assume-unchanged cypress/fixtures/credentials.json",
+    "set_formValue_as_unchangeable": "git update-index --assume-unchanged formValue.js",
+    "set_formValue_as_changeable": "git update-index --no-assume-unchanged formValue.js"
+
   },
   "dependencies": {
     "glob": "^8.1.0",
