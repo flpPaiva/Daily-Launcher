@@ -55,7 +55,6 @@ describe("Launcher", () => {
     const priority = formValue.priority;
     const description = formValue.description;
     const type = formValue.type;
-    const uploadFile = formValue.uploadFile;
     let vlTotal = formValue.vlTotal;
     let nrNFe = formValue.nrNFe;
     let date = formValue.date;
@@ -86,7 +85,16 @@ describe("Launcher", () => {
     cy.get("mat-select#expenseType-select").click({ force: true });
     cy.get("#expenseType-select-panel .mat-mdc-option").contains(type).click();
 
-    if (uploadFile) {
+    if (isEmpty(fileName)) {
+      const dataNFe = {
+        code: nrNFe || " ",
+        date: date || " ",
+        vlTotal: vlTotal || " ",
+      };
+
+      logNfeDataError(dataNFe);
+      setNfeData(dataNFe);
+    } else {
       cy.task("readPDF", { fileName }).then((data) => {
         const dataNFe = {
           code: nrNFe || data.code || " ",
@@ -100,15 +108,6 @@ describe("Launcher", () => {
         // faz upload do arquivo PDF
         cy.get('input[type="file"]').selectFile("cypress/NFes/" + fileName, { force: true });
       });
-    } else {
-      const dataNFe = {
-        code: nrNFe || " ",
-        date: date || " ",
-        vlTotal: vlTotal || " ",
-      };
-
-      logNfeDataError(dataNFe);
-      setNfeData(dataNFe);
     }
   });
 

@@ -80,12 +80,7 @@ Repita o processo com os próximos arquivos.
 > ⚠️ **Notas Fiscais fora do padrão Nota Paraná ou em outros formatos:**  
 > Caso sua Nota Fiscal **não tenha sido exportada do site Nota Paraná**, ou esteja em um formato diferente como `.png` ou `.jpg`, você pode utilizar o **modo manual**:  
 >
-> No arquivo `formValue.js`, defina:
-> ```js
-> const uploadFile = false;
-> ```
->
-> Em seguida, preencha manualmente as variáveis:
+> Preencha manualmente as variáveis:
 > ```js
 > const nrNFe = "número da nota";
 > const date = "data no formato DD/MM/AAAA";
