@@ -4,13 +4,15 @@ O **Daily-Launcher** é uma ferramenta que automatiza o processo de lançamento 
 
 ## 📋 Pré-requisitos
 
-- Node.js **v20.9.0** instalado
-> ℹ️ **Nota:** Este launcher foi criado baseado na exportação (impressão) da NFe do site [Nota Paraná](https://notaparana.pr.gov.br/nfprweb/Extrato). No entanto, seu leitor de PDF é agnóstico e pode ser ajustado para outros formatos. Para isso, basta alterar os parâmetros da task `readPDF` no arquivo `cypress.config.js`.
-  
-  Você pode verificar sua versão com:
-  ```bash
-  node -v
-  ```
+- Node.js **v20.9.0** instalado  
+
+Você pode verificar sua versão com:
+```bash
+node -v
+```
+
+> ℹ️ **Nota:** Este launcher foi criado baseado na exportação (impressão) de NFe do site [Nota Paraná](https://notaparana.pr.gov.br/nfprweb/Extrato). No entanto, seu leitor de PDF é agnóstico e pode ser ajustado para outros formatos. Para isso, basta alterar os parâmetros da task `readPDF` no arquivo `cypress.config.js`.
+
 
 ## 📦 Instalação
 
@@ -34,7 +36,7 @@ Antes de executar o app, você precisa preencher o arquivo de credenciais com se
 
 ## 📁 Organização dos Arquivos
 
-Coloque os arquivos PDF das notas fiscais na pasta `NFes/`.  
+Coloque os arquivos das notas fiscais na pasta `NFes/`.  
 É **recomendado** que os arquivos sejam nomeados numericamente para facilitar o processo em lote:
 
 ```
@@ -64,8 +66,8 @@ Na interface do Cypress:
 ## 📝 Lançamento da Nota
 
 1. Abra o arquivo `formValue.js`
-2. Atribua à variável `fileName` o nome do arquivo PDF que deseja lançar (ex: `"1.pdf"`)
-3. Salve o arquivo.
+2. Atribua à variável `fileName` o nome do arquivo que deseja lançar (ex: `"1.pdf"`)
+3. Salve o arquivo
 
 O script irá automaticamente:
 
@@ -77,12 +79,13 @@ Depois, **verifique as informações** e, se estiver tudo correto, clique em **S
 
 Repita o processo com os próximos arquivos.
 
-> ⚠️ **Notas Fiscais fora do padrão Nota Paraná ou em outros formatos:**  
+> ⚠️ **Notas Fiscais fora do padrão Nota Paraná ou em outros formatos:**
+>   
 > Caso sua Nota Fiscal **não tenha sido exportada do site Nota Paraná**, ou esteja em um formato diferente como `.png` ou `.jpg`, você pode utilizar o **modo manual**:  
 >
-> Preencha manualmente as variáveis:
+> Basta preencher manualmente as variáveis no arquivo `formValue.js`:
 > ```js
-> const nrNFe = "número da nota";
-> const date = "data no formato DD/MM/AAAA";
-> const vlTotal = "valor total";
+> const nrNFe = "Número da nota.";
+> const date = "Data no formato DD/MM/AAAA.";
+> const vlTotal = "Valor total.";
 > ```
