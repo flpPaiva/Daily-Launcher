@@ -34,11 +34,11 @@ Antes de executar o app, você precisa preencher o arquivo de credenciais com se
 
 ## 📁 Organização dos Arquivos
 
-Coloque os arquivos PDF das notas fiscais na pasta `pdfs/`.  
+Coloque os arquivos PDF das notas fiscais na pasta `NFes/`.  
 É **recomendado** que os arquivos sejam nomeados numericamente para facilitar o processo em lote:
 
 ```
-pdfs/
+NFes/
 ├── 1.pdf
 ├── 2.pdf
 ├── 3.pdf
@@ -76,3 +76,18 @@ O script irá automaticamente:
 Depois, **verifique as informações** e, se estiver tudo correto, clique em **Salvar** no Mantis.
 
 Repita o processo com os próximos arquivos.
+
+> ⚠️ **Notas Fiscais fora do padrão Nota Paraná ou em outros formatos**  
+> Caso sua Nota Fiscal **não tenha sido exportada do site Nota Paraná**, ou esteja em um formato diferente como `.png` ou `.jpg`, você pode utilizar o **modo manual**:  
+>
+> No arquivo `formValue.js`, defina:
+> ```js
+> const uploadFile = false;
+> ```
+>
+> Em seguida, preencha manualmente as variáveis:
+> ```js
+> const nrNFe = "número da nota";
+> const date = "data no formato DD/MM/AAAA";
+> const vlTotal = "valor total";
+> ```

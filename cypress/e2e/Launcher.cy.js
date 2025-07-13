@@ -98,7 +98,7 @@ describe("Launcher", () => {
         setNfeData(dataNFe);
 
         // faz upload do arquivo PDF
-        cy.get('input[type="file"]').selectFile("cypress/pdfs/" + fileName, { force: true });
+        cy.get('input[type="file"]').selectFile("cypress/NFes/" + fileName, { force: true });
       });
     } else {
       const dataNFe = {

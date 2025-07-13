@@ -10,7 +10,7 @@ module.exports = defineConfig({
     setupNodeEvents(on, config) {
       on("task", {
         readPDF({ fileName }) {
-          const filePath = path.join(__dirname, "cypress/pdfs", fileName);
+          const filePath = path.join(__dirname, "cypress/NFes", fileName);
 
           try {
             const dataBuffer = fs.readFileSync(filePath);
