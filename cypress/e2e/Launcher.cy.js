@@ -51,13 +51,8 @@ function logNfeDataError(data) {
 
 describe("Launcher", () => {
   it("Set Diárias", () => {
-    const fileName = formValue.fileName;
-    const priority = formValue.priority;
-    const description = formValue.description;
-    const type = formValue.type;
-    let vlTotal = formValue.vlTotal;
-    let nrNFe = formValue.nrNFe;
-    let date = formValue.date;
+    const { fileName, priority, description, type } = formValue;
+    let { vlTotal, nrNFe, date } = formValue;
 
     // Acessa o Mantis
     cy.visit("https://mantis-br.nttdata-solutions.com/app/#/login");
