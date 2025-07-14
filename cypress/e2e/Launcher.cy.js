@@ -14,37 +14,35 @@ function setCredential() {
     }
 
     cy.get("#username").type(credentials.user);
-    cy.get("#password").type(credentials.password);
+    cy.get("#password").type(credentials.password, { log: false });
     cy.get("#password").type("{enter}");
   });
 }
 
 function setNfeData(data) {
-  // Preenche a Data da Nfe
-  cy.get("#-from").clear({ force: true });
-  cy.get("#-from").type(data.date, { force: true });
-
-  // Preenche o Número do Documento
-  cy.get("#document-number").clear({ force: true });
-  cy.get("#document-number").type(data.code, { force: true });
-
-  const value = formatTotalValue(data.vlTotal);
-
-  // Preenche o valor da Nfe
-  cy.get("#value").clear({ force: true });
-  cy.get("#value").type(value, { force: true });
-}
-
-function logNfeDataError(data) {
-  if (isEmpty(data.code)) {
-    throw new Error(`"Número da NFe não encontrado no PDF / formValue.js`);
-  }
-
-  if (isEmpty(data.date)) {
+  if (!isEmpty(data.date)) {
+    // Preenche a Data da Nfe
+    cy.get("#-from").clear({ force: true });
+    cy.get("#-from").type(data.date, { force: true });
+  } else {
     throw new Error(`"Data não encontrada no PDF / formValue.js`);
   }
 
-  if (isEmpty(data.vlTotal)) {
+  if (!isEmpty(data.code)) {
+    // Preenche o Número do Documento
+    cy.get("#document-number").clear({ force: true });
+    cy.get("#document-number").type(data.code, { force: true });
+  } else {
+    throw new Error(`"Número da NFe não encontrado no PDF / formValue.js`);
+  }
+
+  if (!isEmpty(data.vlTotal)) {
+    const value = formatTotalValue(data.vlTotal);
+
+    // Preenche o valor da Nfe
+    cy.get("#value").clear({ force: true });
+    cy.get("#value").type(value, { force: true });
+  } else {
     throw new Error(`"Valor Total não encontrado no PDF / formValue.js`);
   }
 }
@@ -81,24 +79,18 @@ describe("Launcher", () => {
     cy.get("#expenseType-select-panel .mat-mdc-option").contains(type).click();
 
     if (isEmpty(fileName)) {
-      const dataNFe = {
+      setNfeData({
         code: nrNFe || " ",
         date: date || " ",
         vlTotal: vlTotal || " ",
-      };
-
-      logNfeDataError(dataNFe);
-      setNfeData(dataNFe);
+      });
     } else {
       cy.task("readPDF", { fileName }).then((data) => {
-        const dataNFe = {
+        setNfeData({
           code: nrNFe || data.code || " ",
           date: date || data.date || " ",
           vlTotal: vlTotal || data.vlTotal || " ",
-        };
-
-        logNfeDataError(dataNFe);
-        setNfeData(dataNFe);
+        });
 
         // faz upload do arquivo PDF
         cy.get('input[type="file"]').selectFile("cypress/NFes/" + fileName, { force: true });
