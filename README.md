@@ -47,6 +47,7 @@ NFes/
 ```
 
 > 🛠️ Caso seus arquivos ainda não estejam nomeados numericamente, há uma task em Node.js que faz isso automaticamente.  
+>
 > Para executá-la, basta rodar o comando abaixo no terminal:
 >
 > ```bash
