@@ -13,7 +13,6 @@ node -v
 
 > ℹ️ **Nota:** Este launcher foi criado baseado na exportação (impressão) de NFe do site [Nota Paraná](https://notaparana.pr.gov.br/nfprweb/Extrato). No entanto, seu leitor de PDF é agnóstico e pode ser ajustado para outros formatos. Para isso, basta alterar os parâmetros da task `readPDF` no arquivo `cypress.config.js`.
 
-
 ## 📦 Instalação
 
 Clone o repositório e instale as dependências:
@@ -46,6 +45,13 @@ NFes/
 ├── 3.pdf
 ...
 ```
+
+> 🛠️ Caso seus arquivos ainda não estejam nomeados numericamente, há uma task em Node.js que faz isso automaticamente.  
+> Para executá-la, basta rodar o comando abaixo no terminal:
+>
+> ```bash
+> node renamer.js
+> ```
 
 ## ▶️ Execução
 
