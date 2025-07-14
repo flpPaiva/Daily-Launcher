@@ -109,7 +109,7 @@ describe("Launcher", () => {
       cy.get(`span:contains("Gestão de Recursos")`).last().click();
       cy.get(`span:contains("Apontamento de Atividades")`).last().click();
 
-      cy.wait(1000);
+      cy.get(".actis-tree").should("have.length.greaterThan", 0);
 
       cy.window().then((win) => {
         win.removerClasses = function (_class) {
