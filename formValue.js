@@ -10,6 +10,6 @@ export const type = "Meal";
 
 // Deixe esses campos vazios para usar os dados do PDF.
 // No entanto se quiser preencher manualmente ou sobrescrever, eles terão prioridade.
-export const nrNFe = ""; // Exemplo: "123456789"
 export const date = ""; // Exemplo: "31/01/2025"
+export const nrNFe = ""; // Exemplo: "123456789"
 export const vlTotal = ""; // Exemplo: "100,00"

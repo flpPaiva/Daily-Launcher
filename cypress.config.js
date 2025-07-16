@@ -12,6 +12,10 @@ module.exports = defineConfig({
         readPDF({ fileName }) {
           const filePath = path.join(__dirname, "cypress/NFes", fileName);
 
+          if (!filePath.includes(".pdf")) {
+            return {};
+          }
+
           try {
             const dataBuffer = fs.readFileSync(filePath);
 
