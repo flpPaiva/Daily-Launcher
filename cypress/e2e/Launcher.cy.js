@@ -97,34 +97,4 @@ describe("Launcher", () => {
       });
     }
   });
-
-  false &&
-    it("Open MyActis", () => {
-      cy.visit("https://mantis-br.nttdata-solutions.com/app/#/login");
-
-      setCredential();
-
-      cy.get(`span:contains("Mantis")`).last().click();
-      cy.get(`span:contains("Documento")`).last().click();
-      cy.get(`span:contains("Gestão de Recursos")`).last().click();
-      cy.get(`span:contains("Apontamento de Atividades")`).last().click();
-
-      cy.get(".actis-tree").should("have.length.greaterThan", 0);
-
-      cy.window().then((win) => {
-        win.removerClasses = function (_class) {
-          const elementos = win.document.querySelectorAll("." + _class);
-          elementos.forEach((el) => el.classList.remove(_class));
-        };
-
-        win.removerDisableds = function () {
-          const elementos = win.document.querySelectorAll(`[disabled="true"]`);
-          elementos.forEach((el) => el.removeAttribute(`disabled`));
-        };
-
-        // Executa as funções no contexto da página
-        win.removerClasses("disabled-node");
-        win.removerDisableds();
-      });
-    });
 });
