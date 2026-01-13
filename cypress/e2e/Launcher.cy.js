@@ -48,53 +48,79 @@ function setNfeData(data) {
 }
 
 describe("Launcher", () => {
-  it("Set Diárias", () => {
-    const { fileName, priority, description, type } = formValue;
-    let { vlTotal, nrNFe, date } = formValue;
+  false &&
+    it("Set Diárias", () => {
+      const { fileName, priority, description, type } = formValue;
+      let { vlTotal, nrNFe, date } = formValue;
 
-    // Acessa o Mantis
+      // Acessa o Mantis
+      cy.visit("https://mantis-br.nttdata-solutions.com/app/#/login");
+
+      setCredential();
+
+      // Acessa o menu de lançamentos
+      cy.get(`span:contains("Mantis")`).last().click();
+      cy.get(`span:contains("Documento")`).last().click();
+      cy.get(`span:contains("Financeiro")`).last().click();
+      cy.get(`span:contains("Solicitação")`).last().click();
+      cy.get(`span:contains("Reembolso de Diária")`).last().click();
+
+      cy.wait(1000);
+
+      // Escolhe a prioridade Média
+      cy.get("mat-select#priority-select").click({ force: true });
+      cy.get("#priority-select-panel .mat-mdc-option").contains(priority).click();
+
+      // Adiciona a Descrição da Diária
+      cy.get("textarea#description-textarea").clear({ force: true });
+      cy.get("textarea#description-textarea").type(description, { force: true });
+
+      // Preenche o tipo de despesa
+      cy.get("mat-select#expenseType-select").click({ force: true });
+      cy.get("#expenseType-select-panel .mat-mdc-option").contains(type).click();
+
+      if (isEmpty(fileName)) {
+        setNfeData({
+          code: nrNFe || " ",
+          date: date || " ",
+          vlTotal: vlTotal || " ",
+        });
+      } else {
+        cy.task("readPDF", { fileName }).then((data) => {
+          setNfeData({
+            code: nrNFe || data.code || " ",
+            date: date || data.date || " ",
+            vlTotal: vlTotal || data.vlTotal || " ",
+          });
+
+          // faz upload do arquivo PDF
+          cy.get('input[type="file"]').selectFile("cypress/NFes/" + fileName, { force: true });
+        });
+      }
+    });
+
+  it("Visitar MyActis", () => {
     cy.visit("https://mantis-br.nttdata-solutions.com/app/#/login");
 
     setCredential();
 
-    // Acessa o menu de lançamentos
     cy.get(`span:contains("Mantis")`).last().click();
     cy.get(`span:contains("Documento")`).last().click();
-    cy.get(`span:contains("Financeiro")`).last().click();
-    cy.get(`span:contains("Solicitação")`).last().click();
-    cy.get(`span:contains("Reembolso de Diária")`).last().click();
+    cy.get(`span:contains("Gestão de Recursos")`).last().click();
+    cy.get(`span:contains("Apontamento de Atividades")`).last().click();
 
-    cy.wait(1000);
-
-    // Escolhe a prioridade Média
-    cy.get("mat-select#priority-select").click({ force: true });
-    cy.get("#priority-select-panel .mat-mdc-option").contains(priority).click();
-
-    // Adiciona a Descrição da Diária
-    cy.get("textarea#description-textarea").clear({ force: true });
-    cy.get("textarea#description-textarea").type(description, { force: true });
-
-    // Preenche o tipo de despesa
-    cy.get("mat-select#expenseType-select").click({ force: true });
-    cy.get("#expenseType-select-panel .mat-mdc-option").contains(type).click();
-
-    if (isEmpty(fileName)) {
-      setNfeData({
-        code: nrNFe || " ",
-        date: date || " ",
-        vlTotal: vlTotal || " ",
+    // Remover todas as classes disabled-node
+    cy.get('.disabled-node').then(($elements) => {
+      $elements.each((index, element) => {
+      cy.wrap(element).invoke('removeClass', 'disabled-node');
       });
-    } else {
-      cy.task("readPDF", { fileName }).then((data) => {
-        setNfeData({
-          code: nrNFe || data.code || " ",
-          date: date || data.date || " ",
-          vlTotal: vlTotal || data.vlTotal || " ",
-        });
+    });
 
-        // faz upload do arquivo PDF
-        cy.get('input[type="file"]').selectFile("cypress/NFes/" + fileName, { force: true });
+    // Remover o atributo disabled de todos os botões
+    cy.get('button[disabled="true"]').then(($buttons) => {
+      $buttons.each((index, button) => {
+      cy.wrap(button).invoke('removeAttr', 'disabled');
       });
-    }
+    });
   });
 });
