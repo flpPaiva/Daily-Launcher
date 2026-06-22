@@ -112,6 +112,17 @@ async function handleFile(file) {
   }
 }
 
+// ── Links rápidos ────────────────────────────────────────
+
+const LINKS = {
+  "btn-mantis":      "https://mantis-br.nttdata-solutions.com/app/#/app/07a72000-3ccb-4a5a-b1ea-92459bcc986d?R_RequestType_ID=1000472&R_Group_ID=1000081",
+  "btn-nota-parana": "https://authz-sefa.identidadedigital.pr.gov.br/cidadao_authz/authentication.html?response_type=code&client_id=8cb1b61969446782289b3c2c3558f3b6&redirect_uri=https://notaparana.pr.gov.br/nfprweb&scope=cliente_authz.basic&state=1782144155039&urlCadCPF=https://notaparana.pr.gov.br/nfprweb/publico/CadastroConsumidor&urlCadCNPJ=null&urlWWW=null&urlCadastroCPF=https://notaparana.pr.gov.br/nfprweb/publico/CadastroConsumidor&urlCadastroCNPJ=null&forgotPass=https://admin-sefa.identidadedigital.pr.gov.br/cidadao_admin/publico/RecuperacaoConta&serverAS=https://authz-sefa.identidadedigital.pr.gov.br&serverAD=https://admin-sefa.identidadedigital.pr.gov.br&nome=Nota+Paran%C3%A1&logotipo=8cb1b61969446782289b3c2c3558f3b6&exibirNomeSistema=false&federacao=%7Cgovbr%7Ccert%7C&code_challenge=tORJy0GGDiQXVdIqlKPRqlTANctwemvDEA-R3djXbXY&code_challenge_method=S256",
+};
+
+for (const [id, url] of Object.entries(LINKS)) {
+  document.getElementById(id).addEventListener("click", () => chrome.tabs.create({ url }));
+}
+
 // ── Renomear pasta ───────────────────────────────────────
 
 function setRenameStatus(msg, isError = false) {

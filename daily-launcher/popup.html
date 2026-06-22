@@ -111,6 +111,30 @@
       }
       .btn-secondary:hover { background: #eaf2fb; }
 
+      footer {
+        position: sticky;
+        bottom: 0;
+        background: white;
+        border-top: 1px solid #ddd;
+        padding: 8px 16px;
+        display: flex;
+        gap: 8px;
+      }
+
+      .btn-link {
+        flex: 1;
+        padding: 7px 4px;
+        border: 1px solid #005b97;
+        border-radius: 4px;
+        background: white;
+        color: #005b97;
+        font-size: 12px;
+        font-weight: bold;
+        cursor: pointer;
+        text-align: center;
+      }
+      .btn-link:hover { background: #eaf2fb; }
+
       .tools-section {
         margin-bottom: 10px;
         padding-bottom: 10px;
@@ -305,6 +329,11 @@
         </div>
       </div>
     </div>
+
+    <footer>
+      <button class="btn-link" id="btn-mantis">Mantis</button>
+      <button class="btn-link" id="btn-nota-parana">Nota Paraná</button>
+    </footer>
 
     <script type="module" src="popup.js"></script>
   </body>
