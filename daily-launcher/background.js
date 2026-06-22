@@ -1,4 +1,14 @@
 chrome.action.onClicked.addListener(async () => {
+  const popupUrl = chrome.runtime.getURL("popup.html");
+
+  const existing = await chrome.windows.getAll({ windowTypes: ["popup"], populate: true });
+  const popupWin = existing.find(w => w.tabs?.some(t => t.url?.startsWith(popupUrl)));
+
+  if (popupWin) {
+    chrome.windows.update(popupWin.id, { focused: true });
+    return;
+  }
+
   const width  = 340;
   const height = 620;
   const margin = 20;
@@ -9,7 +19,7 @@ chrome.action.onClicked.addListener(async () => {
   const top  = browserWin.top  + margin;
 
   chrome.windows.create({
-    url: chrome.runtime.getURL("popup.html"),
+    url: popupUrl,
     type: "popup",
     width,
     height,
