@@ -2,16 +2,17 @@
   "scripts": {
     "cypress:open": "npm run set_credentials_as_unchangeable && npm run set_formValue_as_unchangeable && npx cypress open",
     "renamer": "node renamer.js",
+    "copy-nfe": "node copyNfe.js",
     "set_credentials_as_unchangeable": "git update-index --assume-unchanged cypress/fixtures/credentials.json",
     "set_credentials_as_changeable": "git update-index --no-assume-unchanged cypress/fixtures/credentials.json",
     "set_formValue_as_unchangeable": "git update-index --assume-unchanged formValue.js",
     "set_formValue_as_changeable": "git update-index --no-assume-unchanged formValue.js"
-
   },
   "dependencies": {
     "glob": "^8.1.0",
     "glob-promise": "^6.0.7",
     "pdf-parse": "^1.1.1",
+    "pdfjs-dist": "^6.0.227",
     "puppeteer": "^24.12.1",
     "terser": "^5.39.0"
   },

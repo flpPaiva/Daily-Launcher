@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Lançador de Diárias",
+  "version": "1.0",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "Lançador de Diárias",
+    "default_icon": "icon.png"
+  },
+  "icons": {
+    "16":  "icon.png",
+    "48":  "icon.png",
+    "128": "icon.png"
+  },
+  "permissions": ["activeTab", "scripting", "windows", "storage"],
+  "host_permissions": ["https://mantis-br.nttdata-solutions.com/*"],
+  "web_accessible_resources": [
+    {
+      "resources": ["pdf.worker.min.mjs"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

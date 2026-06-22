@@ -69,6 +69,8 @@ describe("Launcher", () => {
       description = getDescription(type);
     }
 
+    cy.intercept("POST", "https://www.google-analytics.com/**", {}).as("analytics");
+
     // Acessa o Mantis
     cy.visit("https://mantis-br.nttdata-solutions.com/app/#/login");
 
