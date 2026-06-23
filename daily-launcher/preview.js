@@ -73,24 +73,41 @@ chrome.storage.session.get("previewPdf", async ({ previewPdf }) => {
 
 btnPrev.addEventListener("click",    () => renderPage(currentPage - 1));
 btnNext.addEventListener("click",    () => renderPage(currentPage + 1));
-btnZoomIn.addEventListener("click",  async () => {
-  zoomScale = Math.min(ZOOM_MAX, +(zoomScale + ZOOM_STEP).toFixed(2));
+async function zoomAround(newZoom) {
+  const oldZoom = zoomScale;
+  const cx      = scroll.scrollLeft + scroll.clientWidth  / 2;
+  const cy      = scroll.scrollTop  + scroll.clientHeight / 2;
+  zoomScale     = newZoom;
   await renderPage(currentPage);
-});
-btnZoomOut.addEventListener("click", async () => {
-  zoomScale = Math.max(ZOOM_MIN, +(zoomScale - ZOOM_STEP).toFixed(2));
-  await renderPage(currentPage);
-});
+  const ratio   = newZoom / oldZoom;
+  scroll.scrollLeft = cx * ratio - scroll.clientWidth  / 2;
+  scroll.scrollTop  = cy * ratio - scroll.clientHeight / 2;
+}
 
-// Ctrl+scroll para zoom
+btnZoomIn.addEventListener("click",  () => zoomAround(Math.min(ZOOM_MAX, +(zoomScale + ZOOM_STEP).toFixed(2))));
+btnZoomOut.addEventListener("click", () => zoomAround(Math.max(ZOOM_MIN, +(zoomScale - ZOOM_STEP).toFixed(2))));
+
+// Ctrl+scroll para zoom — ancora no ponto sob o cursor
 scroll.addEventListener("wheel", async (e) => {
   if (!e.ctrlKey) return;
   e.preventDefault();
-  const delta = e.deltaY < 0 ? ZOOM_STEP : -ZOOM_STEP;
-  const next  = +(zoomScale + delta).toFixed(2);
+  const oldZoom = zoomScale;
+  const delta   = e.deltaY < 0 ? ZOOM_STEP : -ZOOM_STEP;
+  const next    = +(zoomScale + delta).toFixed(2);
   if (next < ZOOM_MIN || next > ZOOM_MAX) return;
+
+  const rect    = scroll.getBoundingClientRect();
+  const mouseX  = e.clientX - rect.left;
+  const mouseY  = e.clientY - rect.top;
+  const originX = scroll.scrollLeft + mouseX;
+  const originY = scroll.scrollTop  + mouseY;
+
   zoomScale = next;
   await renderPage(currentPage);
+
+  const ratio = next / oldZoom;
+  scroll.scrollLeft = originX * ratio - mouseX;
+  scroll.scrollTop  = originY * ratio - mouseY;
 }, { passive: false });
 
 // Drag to pan
