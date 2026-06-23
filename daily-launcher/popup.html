@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <title>NDBS Helpers</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
     <style>
       * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -45,7 +46,10 @@
         line-height: 1;
         flex-shrink: 0;
       }
+
       #btn-back:hover { background: rgba(255,255,255,0.15); }
+
+      #btn-back * {font-size: 14px; vertical-align: middle; }
 
       /* ── Tela inicial ───────────────────────────────── */
 
@@ -362,7 +366,7 @@
     <!-- ── Tela do lançador ──────────────────────────── -->
     <div id="screen-launcher" class="screen">
       <header>
-        <button id="btn-back">←</button>
+        <button id="btn-back"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;">arrow_back_ios_new</span></button>
         Lançador de Diárias
       </header>
 
