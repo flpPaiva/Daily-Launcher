@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Daily Launcher</title>
+    <title>NDB Helpers</title>
     <style>
       * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -16,13 +16,70 @@
         color: #333;
       }
 
+      /* ── Telas ─────────────────────────────────────── */
+
+      .screen { display: none; }
+      .screen.active { display: block; }
+
+      /* ── Header ────────────────────────────────────── */
+
       header {
         background: #005b97;
         color: white;
         padding: 12px 16px;
         font-weight: bold;
         font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
       }
+
+      #btn-back {
+        background: none;
+        border: 1px solid rgba(255,255,255,0.5);
+        color: white;
+        border-radius: 4px;
+        padding: 3px 8px;
+        font-size: 13px;
+        cursor: pointer;
+        line-height: 1;
+        flex-shrink: 0;
+      }
+      #btn-back:hover { background: rgba(255,255,255,0.15); }
+
+      /* ── Tela inicial ───────────────────────────────── */
+
+      .home-content {
+        padding: 32px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .home-btn {
+        width: 100%;
+        padding: 14px 16px;
+        background: white;
+        border: 1px solid #005b97;
+        border-radius: 6px;
+        color: #005b97;
+        font-size: 13px;
+        font-weight: bold;
+        cursor: pointer;
+        text-align: left;
+        transition: background 0.15s;
+      }
+      .home-btn:hover { background: #eaf2fb; }
+
+      .home-btn-icon {
+        width: 18px;
+        height: 18px;
+        object-fit: contain;
+        vertical-align: middle;
+        margin-right: 8px;
+      }
+
+      /* ── Lançador ───────────────────────────────────── */
 
       .content { padding: 12px 16px; }
 
@@ -187,7 +244,8 @@
       }
       .status.error { color: #e53935; }
 
-      /* Modal de preview */
+      /* ── Modal de preview ───────────────────────────── */
+
       #preview-modal {
         display: none;
         position: fixed;
@@ -229,14 +287,12 @@
         user-select: none;
       }
 
-      #preview-scroll.dragging {
-        cursor: grabbing;
-      }
+      #preview-scroll.dragging { cursor: grabbing; }
 
       #preview-canvas {
         display: block;
         background: white;
-        pointer-events: none; /* eventos de drag ficam no container */
+        pointer-events: none;
       }
 
       #preview-nav {
@@ -274,71 +330,115 @@
     </style>
   </head>
   <body>
-    <header>Lançador de Diárias</header>
 
-    <div class="content">
-      <div class="tools-section">
-        <button class="btn btn-secondary" id="btn-renamer" style="margin-top:0">
-          Renomear arquivos para ordem númerica.
+    <!-- ── Tela inicial ──────────────────────────────── -->
+    <div id="screen-home" class="screen active">
+      <header>NDBS Helpers</header>
+      <div class="home-content">
+        <button class="home-btn" id="btn-go-launcher">
+          <img src="icon.png" alt="" class="home-btn-icon" />Lançador de Diárias
         </button>
-        <div class="rename-status" id="rename-status"></div>
-      </div>
-
-      <label class="upload-area" id="upload-area" for="file-input">
-        <span class="upload-label">
-          📄 Clique para selecionar o PDF
-          <span>ou arraste aqui</span>
-        </span>
-        <input type="file" id="file-input" accept=".pdf" multiple />
-      </label>
-
-      <div class="file-nav" id="file-nav">
-        <button class="file-nav-btn" id="btn-prev-file">&#9664;</button>
-        <span id="file-nav-info">Arquivo 1 de 1</span>
-        <button class="file-nav-btn" id="btn-next-file">&#9654;</button>
-      </div>
-
-      <div class="status" id="status"></div>
-
-      <div id="form-section">
-        <div class="form-group">
-          <label>Nº NFe</label>
-          <input type="text" id="f-code" />
-        </div>
-        <div class="form-group">
-          <label>Data</label>
-          <input type="text" id="f-date" placeholder="DD/MM/AAAA" />
-        </div>
-        <div class="form-group">
-          <label>Valor</label>
-          <input type="text" id="f-vlTotal" placeholder="0.00" />
-        </div>
-        <div class="form-group">
-          <label>Tipo</label>
-          <select id="f-type">
-            <option value="Meal">Meal</option>
-            <option value="Mercado">Mercado</option>
-            <option value="Combustível">Combustível</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Prioridade</label>
-          <select id="f-priority">
-            <option value="Mínima">Mínima</option>
-            <option value="Baixa">Baixa</option>
-            <option value="Média" selected>Média</option>
-            <option value="Alta">Alta</option>
-            <option value="Urgente">Urgente</option>
-          </select>
-        </div>
-
-        <hr class="divider" />
-        <button class="btn btn-secondary" id="btn-preview">Visualizar NFe</button>
-        <button class="btn btn-primary" id="btn-lancar">Lançar Diária</button>
+        <button class="home-btn" id="btn-apontamento">
+          <img src="https://mantis-br.nttdata-solutions.com/app/assets/img/logo/favicon.png" alt="" class="home-btn-icon" />Apontamento de Atividades
+        </button>
+        <button class="home-btn" id="btn-senior-x">
+          <img src="assets/media/seniorX.png" alt="" class="home-btn-icon" />Senior-X
+        </button>
+        <button class="home-btn" id="btn-mantis-home">
+          <img src="https://mantis-br.nttdata-solutions.com/app/assets/img/logo/favicon.png" alt="" class="home-btn-icon" />Mantis
+        </button>
+        <button class="home-btn" id="btn-axet">
+          <img src="https://axet.nttdata.com/home/favicon.ico" alt="" class="home-btn-icon" />IA - Axet
+        </button>
+        <button class="home-btn" id="btn-servicenow">
+          <img src="assets/media/service_now.png" alt="" class="home-btn-icon" />Service Now
+        </button>
+        <button class="home-btn" id="btn-successfactors">
+          <img src="https://www.sap.com/favicon.ico" alt="" class="home-btn-icon" />Success Factors
+        </button>
       </div>
     </div>
 
-    <!-- Modal de preview -->
+    <!-- ── Tela do lançador ──────────────────────────── -->
+    <div id="screen-launcher" class="screen">
+      <header>
+        <button id="btn-back">←</button>
+        Lançador de Diárias
+      </header>
+
+      <div class="content">
+        <div class="tools-section">
+          <button class="btn btn-secondary" id="btn-renamer" style="margin-top:0">
+            Renomear arquivos para ordem númerica.
+          </button>
+          <div class="rename-status" id="rename-status"></div>
+        </div>
+
+        <label class="upload-area" id="upload-area" for="file-input">
+          <span class="upload-label">
+            📄 Clique para selecionar o PDF
+            <span>ou arraste aqui</span>
+          </span>
+          <input type="file" id="file-input" accept=".pdf" multiple />
+        </label>
+
+        <div class="file-nav" id="file-nav">
+          <button class="file-nav-btn" id="btn-prev-file">&#9664;</button>
+          <span id="file-nav-info">Arquivo 1 de 1</span>
+          <button class="file-nav-btn" id="btn-next-file">&#9654;</button>
+        </div>
+
+        <div class="status" id="status"></div>
+
+        <div id="form-section">
+          <div class="form-group">
+            <label>Nº NFe</label>
+            <input type="text" id="f-code" />
+          </div>
+          <div class="form-group">
+            <label>Data</label>
+            <input type="text" id="f-date" placeholder="DD/MM/AAAA" />
+          </div>
+          <div class="form-group">
+            <label>Valor</label>
+            <input type="text" id="f-vlTotal" placeholder="0.00" />
+          </div>
+          <div class="form-group">
+            <label>Tipo</label>
+            <select id="f-type">
+              <option value="Meal">Meal</option>
+              <option value="Mercado">Mercado</option>
+              <option value="Combustível">Combustível</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Prioridade</label>
+            <select id="f-priority">
+              <option value="Mínima">Mínima</option>
+              <option value="Baixa">Baixa</option>
+              <option value="Média" selected>Média</option>
+              <option value="Alta">Alta</option>
+              <option value="Urgente">Urgente</option>
+            </select>
+          </div>
+
+          <hr class="divider" />
+          <button class="btn btn-secondary" id="btn-preview">Visualizar NFe</button>
+          <button class="btn btn-primary" id="btn-lancar">Lançar Diária</button>
+        </div>
+      </div>
+
+      <footer>
+        <button class="btn-link" id="btn-mantis">
+          <img src="https://mantis-br.nttdata-solutions.com/app/assets/img/logo/favicon.png" alt="" style="width:14px;height:14px;object-fit:contain;vertical-align:middle;margin-right:4px;" />Reembolso de Diárias
+        </button>
+        <button class="btn-link" id="btn-nota-parana">
+          <img src="https://authz-sefa.identidadedigital.pr.gov.br/cidadao_authz/image/favicon.ico" alt="" style="width:14px;height:14px;object-fit:contain;vertical-align:middle;margin-right:4px;" />Nota Paraná
+        </button>
+      </footer>
+    </div>
+
+    <!-- ── Modal de preview ──────────────────────────── -->
     <div id="preview-modal">
       <div id="preview-modal-header">
         <span id="preview-filename">NFe</span>
@@ -363,12 +463,6 @@
         </div>
       </div>
     </div>
-
-    <footer>
-      <button class="btn-link" id="btn-mantis">Reembolso de Diárias</button>
-      <button class="btn-link" id="btn-apontamento">Apontamento de Atividades</button>
-      <button class="btn-link" id="btn-nota-parana">Nota Paraná</button>
-    </footer>
 
     <script type="module" src="popup.js"></script>
   </body>

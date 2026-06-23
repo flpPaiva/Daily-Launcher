@@ -58,6 +58,24 @@ function setStatus(msg, isError = false) {
   console.log("[status]", msg);
 }
 
+// ── Navegação entre telas ────────────────────────────────
+
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach((s) => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+document.getElementById("btn-go-launcher").addEventListener("click", () => showScreen("screen-launcher"));
+document.getElementById("btn-senior-x").addEventListener("click", () => openOrFocus("https://platform.senior.com.br/senior-x/#/"));
+document.getElementById("btn-mantis-home").addEventListener("click", () => openOrFocus("https://mantis-br.nttdata-solutions.com/app/#/app/6e1962e3-cf80-4e52-99b4-58f6314b2138"));
+document.getElementById("btn-axet").addEventListener("click", () => openOrFocus("https://axet.nttdata.com/home/axet/plugin"));
+document.getElementById("btn-servicenow").addEventListener("click", () => openOrFocus("https://ndbs.service-now.com/sp"));
+document.getElementById("btn-successfactors").addEventListener("click", () => openOrFocus("https://performancemanager5.successfactors.eu/sf/liveprofile?bplte_company=itelliP#/profile/AF91E236CA2C4702A2598CCDCF6DF9B6"));
+document.getElementById("btn-back").addEventListener("click", () => {
+  resetLauncher();
+  showScreen("screen-home");
+});
+
 // Upload — sem fileInput.click() via JS (fecha popup no Chrome)
 const fileInput = document.getElementById("file-input");
 const uploadArea = document.getElementById("upload-area");
@@ -282,6 +300,25 @@ function closePreview() {
   document.getElementById("preview-modal").classList.remove("open");
 }
 
+function resetLauncher() {
+  selectedFile = null;
+  selectedFiles = [];
+  currentFileIndex = 0;
+  pdfDoc = null;
+  currentPage = 1;
+  zoomScale = 1.0;
+
+  fileInput.value = "";
+  uploadArea.classList.remove("has-file");
+  uploadArea.querySelector(".upload-label").innerHTML =
+    `📄 Clique para selecionar o PDF <span>ou arraste aqui</span>`;
+
+  document.getElementById("form-section").classList.remove("visible");
+  document.getElementById("file-nav").classList.remove("visible");
+  setStatus("");
+  closePreview();
+}
+
 document.getElementById("btn-preview").addEventListener("click", async () => {
   if (!selectedFile) return;
 
@@ -317,6 +354,14 @@ document.getElementById("btn-close-preview-nav").addEventListener("click", close
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape" && document.getElementById("preview-modal").classList.contains("open")) {
     closePreview();
+    return;
+  }
+
+  const tag = document.activeElement?.tagName;
+  if (tag === "INPUT" || tag === "SELECT" || tag === "TEXTAREA") return;
+
+  if (e.key === "-") {
+    document.getElementById("btn-preview").click();
   }
 });
 
