@@ -13,7 +13,9 @@ try {
 // Documento PDF em memória para reuso no preview
 let pdfDoc = null;
 let currentPage = 1;
-let selectedFile = null; // arquivo original para envio ao Mantis
+let selectedFile = null;   // arquivo ativo (para envio ao Mantis e preview)
+let selectedFiles = [];    // todos os arquivos selecionados
+let currentFileIndex = 0;
 
 function formatTotalValue(value) {
   return value
@@ -73,15 +75,54 @@ uploadArea.addEventListener("dragleave", () => {
 
 uploadArea.addEventListener("drop", (e) => {
   e.preventDefault();
-  console.log("[drop] arquivo solto");
-  const file = e.dataTransfer.files[0];
-  if (file?.type === "application/pdf") handleFile(file);
-  else setStatus("Somente arquivos PDF são aceitos.", true);
+  console.log("[drop] arquivos soltos:", e.dataTransfer.files.length);
+  const pdfs = Array.from(e.dataTransfer.files).filter((f) => f.type === "application/pdf");
+  if (pdfs.length === 0) { setStatus("Somente arquivos PDF são aceitos.", true); return; }
+  selectedFiles = pdfs;
+  currentFileIndex = 0;
+  updateFileNav();
+  handleFile(selectedFiles[0]);
 });
 
 fileInput.addEventListener("change", () => {
-  console.log("[change] arquivo selecionado:", fileInput.files[0]?.name);
-  if (fileInput.files[0]) handleFile(fileInput.files[0]);
+  if (!fileInput.files.length) return;
+  console.log("[change] arquivos selecionados:", fileInput.files.length);
+  selectedFiles = Array.from(fileInput.files);
+  currentFileIndex = 0;
+  updateFileNav();
+  handleFile(selectedFiles[0]);
+});
+
+function updateFileNav() {
+  const nav     = document.getElementById("file-nav");
+  const info    = document.getElementById("file-nav-info");
+  const prevBtn = document.getElementById("btn-prev-file");
+  const nextBtn = document.getElementById("btn-next-file");
+
+  if (selectedFiles.length > 1) {
+    nav.classList.add("visible");
+    info.textContent    = `Arquivo ${currentFileIndex + 1} de ${selectedFiles.length}`;
+    prevBtn.disabled    = currentFileIndex === 0;
+    nextBtn.disabled    = currentFileIndex === selectedFiles.length - 1;
+  } else {
+    nav.classList.remove("visible");
+  }
+}
+
+document.getElementById("btn-prev-file").addEventListener("click", () => {
+  if (currentFileIndex > 0) {
+    currentFileIndex--;
+    updateFileNav();
+    handleFile(selectedFiles[currentFileIndex]);
+  }
+});
+
+document.getElementById("btn-next-file").addEventListener("click", () => {
+  if (currentFileIndex < selectedFiles.length - 1) {
+    currentFileIndex++;
+    updateFileNav();
+    handleFile(selectedFiles[currentFileIndex]);
+  }
 });
 
 async function handleFile(file) {
