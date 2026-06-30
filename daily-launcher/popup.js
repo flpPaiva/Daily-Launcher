@@ -66,7 +66,7 @@ function showScreen(id) {
 }
 
 document.getElementById("btn-go-launcher").addEventListener("click", () => showScreen("screen-launcher"));
-document.getElementById("btn-senior-x").addEventListener("click", () => openOrFocus("https://platform.senior.com.br/senior-x/#/"));
+document.getElementById("btn-senior-x").addEventListener("click", () => openOrFocus("https://platform.senior.com.br/login/?redirectTo=https%3A%2F%2Fplatform.senior.com.br%2Fsenior-x%2F&tenant=bs.nttdata.com"));
 document.getElementById("btn-mantis-home").addEventListener("click", () => openOrFocus("https://mantis-br.nttdata-solutions.com/app/#/app/6e1962e3-cf80-4e52-99b4-58f6314b2138"));
 document.getElementById("btn-axet").addEventListener("click", () => openOrFocus("https://axet.nttdata.com/home/axet/plugin"));
 document.getElementById("btn-servicenow").addEventListener("click", () => openOrFocus("https://ndbs.service-now.com/sp"));
