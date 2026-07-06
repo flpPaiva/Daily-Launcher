@@ -13,8 +13,8 @@ try {
 // Documento PDF em memória para reuso no preview
 let pdfDoc = null;
 let currentPage = 1;
-let selectedFile = null;   // arquivo ativo (para envio ao Mantis e preview)
-let selectedFiles = [];    // todos os arquivos selecionados
+let selectedFile = null; // arquivo ativo (para envio ao Mantis e preview)
+let selectedFiles = []; // todos os arquivos selecionados
 let currentFileIndex = 0;
 
 function formatTotalValue(value) {
@@ -66,11 +66,22 @@ function showScreen(id) {
 }
 
 document.getElementById("btn-go-launcher").addEventListener("click", () => showScreen("screen-launcher"));
-document.getElementById("btn-senior-x").addEventListener("click", () => openOrFocus("https://platform.senior.com.br/login/?redirectTo=https%3A%2F%2Fplatform.senior.com.br%2Fsenior-x%2F&tenant=bs.nttdata.com"));
-document.getElementById("btn-mantis-home").addEventListener("click", () => openOrFocus("https://mantis-br.nttdata-solutions.com/app/#/app/6e1962e3-cf80-4e52-99b4-58f6314b2138"));
+document
+  .getElementById("btn-senior-x")
+  .addEventListener("click", () =>
+    openOrFocus("https://platform.senior.com.br/login/?redirectTo=https%3A%2F%2Fplatform.senior.com.br%2Fsenior-x%2F&tenant=bs.nttdata.com"),
+  );
+document
+  .getElementById("btn-mantis-home")
+  .addEventListener("click", () => openOrFocus("https://mantis-br.nttdata-solutions.com/app/#/app/6e1962e3-cf80-4e52-99b4-58f6314b2138"));
 document.getElementById("btn-axet").addEventListener("click", () => openOrFocus("https://axet.nttdata.com/home/axet/plugin"));
 document.getElementById("btn-servicenow").addEventListener("click", () => openOrFocus("https://ndbs.service-now.com/sp"));
-document.getElementById("btn-successfactors").addEventListener("click", () => openOrFocus("https://performancemanager5.successfactors.eu/sf/liveprofile?bplte_company=itelliP#/profile/AF91E236CA2C4702A2598CCDCF6DF9B6"));
+document
+  .getElementById("btn-successfactors")
+  .addEventListener("click", () =>
+    openOrFocus("https://performancemanager5.successfactors.eu/sf/liveprofile?bplte_company=itelliP#/profile/AF91E236CA2C4702A2598CCDCF6DF9B6"),
+  );
+document.getElementById("btn-knowbe4").addEventListener("click", () => openOrFocus("https://eu.knowbe4.com/lx/dashboard"));
 document.getElementById("btn-back").addEventListener("click", () => {
   resetLauncher();
   showScreen("screen-home");
@@ -95,7 +106,10 @@ uploadArea.addEventListener("drop", (e) => {
   e.preventDefault();
   console.log("[drop] arquivos soltos:", e.dataTransfer.files.length);
   const pdfs = Array.from(e.dataTransfer.files).filter((f) => f.type === "application/pdf");
-  if (pdfs.length === 0) { setStatus("Somente arquivos PDF são aceitos.", true); return; }
+  if (pdfs.length === 0) {
+    setStatus("Somente arquivos PDF são aceitos.", true);
+    return;
+  }
   selectedFiles = pdfs;
   currentFileIndex = 0;
   updateFileNav();
@@ -112,16 +126,16 @@ fileInput.addEventListener("change", () => {
 });
 
 function updateFileNav() {
-  const nav     = document.getElementById("file-nav");
-  const info    = document.getElementById("file-nav-info");
+  const nav = document.getElementById("file-nav");
+  const info = document.getElementById("file-nav-info");
   const prevBtn = document.getElementById("btn-prev-file");
   const nextBtn = document.getElementById("btn-next-file");
 
   if (selectedFiles.length > 1) {
     nav.classList.add("visible");
-    info.textContent    = `Arquivo ${currentFileIndex + 1} de ${selectedFiles.length}`;
-    prevBtn.disabled    = currentFileIndex === 0;
-    nextBtn.disabled    = currentFileIndex === selectedFiles.length - 1;
+    info.textContent = `Arquivo ${currentFileIndex + 1} de ${selectedFiles.length}`;
+    prevBtn.disabled = currentFileIndex === 0;
+    nextBtn.disabled = currentFileIndex === selectedFiles.length - 1;
   } else {
     nav.classList.remove("visible");
   }
@@ -148,8 +162,7 @@ async function handleFile(file) {
   console.log("[handleFile] inicio:", file.name);
   setStatus("Lendo PDF...");
   uploadArea.classList.add("has-file");
-  uploadArea.querySelector(".upload-label").innerHTML =
-    `📄 ${file.name} <span>clique para trocar</span>`;
+  uploadArea.querySelector(".upload-label").innerHTML = `📄 ${file.name} <span>clique para trocar</span>`;
 
   try {
     const data = await parsePDF(file);
@@ -174,9 +187,10 @@ async function handleFile(file) {
 // ── Links rápidos ────────────────────────────────────────
 
 const LINKS = {
-  "btn-mantis":      "https://mantis-br.nttdata-solutions.com/app/#/app/07a72000-3ccb-4a5a-b1ea-92459bcc986d?R_RequestType_ID=1000472&R_Group_ID=1000081",
+  "btn-mantis": "https://mantis-br.nttdata-solutions.com/app/#/app/07a72000-3ccb-4a5a-b1ea-92459bcc986d?R_RequestType_ID=1000472&R_Group_ID=1000081",
   "btn-apontamento": "https://mantis-br.nttdata-solutions.com/app/#/app/9044355e-1c7e-428c-a03d-3c2d4cf3ed86",
-  "btn-nota-parana": "https://authz-sefa.identidadedigital.pr.gov.br/cidadao_authz/authentication.html?response_type=code&client_id=8cb1b61969446782289b3c2c3558f3b6&redirect_uri=https://notaparana.pr.gov.br/nfprweb&scope=cliente_authz.basic&state=1782144155039&urlCadCPF=https://notaparana.pr.gov.br/nfprweb/publico/CadastroConsumidor&urlCadCNPJ=null&urlWWW=null&urlCadastroCPF=https://notaparana.pr.gov.br/nfprweb/publico/CadastroConsumidor&urlCadastroCNPJ=null&forgotPass=https://admin-sefa.identidadedigital.pr.gov.br/cidadao_admin/publico/RecuperacaoConta&serverAS=https://authz-sefa.identidadedigital.pr.gov.br&serverAD=https://admin-sefa.identidadedigital.pr.gov.br&nome=Nota+Paran%C3%A1&logotipo=8cb1b61969446782289b3c2c3558f3b6&exibirNomeSistema=false&federacao=%7Cgovbr%7Ccert%7C&code_challenge=tORJy0GGDiQXVdIqlKPRqlTANctwemvDEA-R3djXbXY&code_challenge_method=S256",
+  "btn-nota-parana":
+    "https://authz-sefa.identidadedigital.pr.gov.br/cidadao_authz/authentication.html?response_type=code&client_id=8cb1b61969446782289b3c2c3558f3b6&redirect_uri=https://notaparana.pr.gov.br/nfprweb&scope=cliente_authz.basic&state=1782144155039&urlCadCPF=https://notaparana.pr.gov.br/nfprweb/publico/CadastroConsumidor&urlCadCNPJ=null&urlWWW=null&urlCadastroCPF=https://notaparana.pr.gov.br/nfprweb/publico/CadastroConsumidor&urlCadastroCNPJ=null&forgotPass=https://admin-sefa.identidadedigital.pr.gov.br/cidadao_admin/publico/RecuperacaoConta&serverAS=https://authz-sefa.identidadedigital.pr.gov.br&serverAD=https://admin-sefa.identidadedigital.pr.gov.br&nome=Nota+Paran%C3%A1&logotipo=8cb1b61969446782289b3c2c3558f3b6&exibirNomeSistema=false&federacao=%7Cgovbr%7Ccert%7C&code_challenge=tORJy0GGDiQXVdIqlKPRqlTANctwemvDEA-R3djXbXY&code_challenge_method=S256",
 };
 
 async function openOrFocus(url) {
@@ -248,8 +262,8 @@ document.getElementById("btn-renamer").addEventListener("click", async () => {
 
 let zoomScale = 1.0;
 const ZOOM_STEP = 0.25;
-const ZOOM_MIN  = 0.5;
-const ZOOM_MAX  = 3.0;
+const ZOOM_MIN = 0.5;
+const ZOOM_MAX = 3.0;
 let currentRenderTask = null;
 
 async function renderPage(pageNum) {
@@ -272,10 +286,10 @@ async function renderPage(pageNum) {
   const viewport = page.getViewport({ scale: finalScale });
 
   // Define o tamanho real do canvas em pixels
-  canvas.width  = viewport.width;
+  canvas.width = viewport.width;
   canvas.height = viewport.height;
   // Tamanho CSS igual ao tamanho real (sem escalonamento pelo browser)
-  canvas.style.width  = viewport.width  + "px";
+  canvas.style.width = viewport.width + "px";
   canvas.style.height = viewport.height + "px";
 
   currentRenderTask = page.render({ canvasContext: canvas.getContext("2d"), viewport });
@@ -288,12 +302,12 @@ async function renderPage(pageNum) {
   currentRenderTask = null;
 
   currentPage = pageNum;
-  document.getElementById("page-info").textContent   = `${pageNum} / ${pdfDoc.numPages}`;
-  document.getElementById("btn-prev-page").disabled  = pageNum <= 1;
-  document.getElementById("btn-next-page").disabled  = pageNum >= pdfDoc.numPages;
-  document.getElementById("zoom-level").textContent  = Math.round(zoomScale * 100) + "%";
-  document.getElementById("btn-zoom-out").disabled   = zoomScale <= ZOOM_MIN;
-  document.getElementById("btn-zoom-in").disabled    = zoomScale >= ZOOM_MAX;
+  document.getElementById("page-info").textContent = `${pageNum} / ${pdfDoc.numPages}`;
+  document.getElementById("btn-prev-page").disabled = pageNum <= 1;
+  document.getElementById("btn-next-page").disabled = pageNum >= pdfDoc.numPages;
+  document.getElementById("zoom-level").textContent = Math.round(zoomScale * 100) + "%";
+  document.getElementById("btn-zoom-out").disabled = zoomScale <= ZOOM_MIN;
+  document.getElementById("btn-zoom-in").disabled = zoomScale >= ZOOM_MAX;
 }
 
 function closePreview() {
@@ -310,8 +324,7 @@ function resetLauncher() {
 
   fileInput.value = "";
   uploadArea.classList.remove("has-file");
-  uploadArea.querySelector(".upload-label").innerHTML =
-    `📄 Clique para selecionar o PDF <span>ou arraste aqui</span>`;
+  uploadArea.querySelector(".upload-label").innerHTML = `📄 Clique para selecionar o PDF <span>ou arraste aqui</span>`;
 
   document.getElementById("form-section").classList.remove("visible");
   document.getElementById("file-nav").classList.remove("visible");
@@ -331,19 +344,19 @@ document.getElementById("btn-preview").addEventListener("click", async () => {
   await chrome.storage.session.set({ previewPdf: base64 });
 
   // Abre a janela de preview ao lado esquerdo do popup
-  const popupWin   = await chrome.windows.getCurrent();
-  const previewW   = 520;
-  const previewH   = popupWin.height;
-  const previewLeft= popupWin.left - previewW - 10;
+  const popupWin = await chrome.windows.getCurrent();
+  const previewW = 520;
+  const previewH = popupWin.height;
+  const previewLeft = popupWin.left - previewW - 10;
   const previewTop = popupWin.top;
 
   chrome.windows.create({
     url: chrome.runtime.getURL("preview.html"),
     type: "popup",
-    width:  previewW,
+    width: previewW,
     height: previewH,
-    left:   Math.max(0, previewLeft),
-    top:    previewTop,
+    left: Math.max(0, previewLeft),
+    top: previewTop,
     focused: false, // mantém o foco no popup principal
   });
 });
@@ -387,7 +400,7 @@ previewScroll.addEventListener("mousedown", (e) => {
 window.addEventListener("mousemove", (e) => {
   if (!isDragging) return;
   previewScroll.scrollLeft = scrollStartX - (e.clientX - dragStartX);
-  previewScroll.scrollTop  = scrollStartY - (e.clientY - dragStartY);
+  previewScroll.scrollTop = scrollStartY - (e.clientY - dragStartY);
 });
 
 window.addEventListener("mouseup", () => {
@@ -396,15 +409,19 @@ window.addEventListener("mouseup", () => {
   previewScroll.classList.remove("dragging");
 });
 
-previewScroll.addEventListener("wheel", async (e) => {
-  if (!e.ctrlKey) return;
-  e.preventDefault();
-  const delta = e.deltaY < 0 ? ZOOM_STEP : -ZOOM_STEP;
-  const next = +(zoomScale + delta).toFixed(2);
-  if (next < ZOOM_MIN || next > ZOOM_MAX) return;
-  zoomScale = next;
-  await renderPage(currentPage);
-}, { passive: false });
+previewScroll.addEventListener(
+  "wheel",
+  async (e) => {
+    if (!e.ctrlKey) return;
+    e.preventDefault();
+    const delta = e.deltaY < 0 ? ZOOM_STEP : -ZOOM_STEP;
+    const next = +(zoomScale + delta).toFixed(2);
+    if (next < ZOOM_MIN || next > ZOOM_MAX) return;
+    zoomScale = next;
+    await renderPage(currentPage);
+  },
+  { passive: false },
+);
 
 document.getElementById("btn-zoom-in").addEventListener("click", async () => {
   if (zoomScale >= ZOOM_MAX) return;
@@ -476,7 +493,10 @@ function fillForm(data) {
 
   function setInput(selector, value) {
     const el = document.querySelector(selector);
-    if (!el) { console.warn(`Não encontrado: ${selector}`); return; }
+    if (!el) {
+      console.warn(`Não encontrado: ${selector}`);
+      return;
+    }
     const proto = el.tagName === "TEXTAREA" ? HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
     const setter = Object.getOwnPropertyDescriptor(proto, "value").set;
     setter.call(el, value);
@@ -486,22 +506,31 @@ function fillForm(data) {
 
   async function selectOption(selectSel, panelSel, text) {
     const sel = document.querySelector(selectSel);
-    if (!sel) { console.warn(`Select não encontrado: ${selectSel}`); return; }
+    if (!sel) {
+      console.warn(`Select não encontrado: ${selectSel}`);
+      return;
+    }
     sel.click();
     await delay(600);
-    const opt = [...document.querySelectorAll(`${panelSel} .mat-mdc-option`)]
-      .find((o) => o.textContent.trim().includes(text));
-    if (!opt) { console.warn(`Opção "${text}" não encontrada`); return; }
+    const opt = [...document.querySelectorAll(`${panelSel} .mat-mdc-option`)].find((o) => o.textContent.trim().includes(text));
+    if (!opt) {
+      console.warn(`Opção "${text}" não encontrada`);
+      return;
+    }
     opt.click();
     await delay(300);
   }
 
   function getDescription(type) {
     switch (type) {
-      case "Meal": return "Refeição.";
-      case "Mercado": return "Mercado.";
-      case "Combustível": return "Abastecimento do veículo.";
-      default: return "";
+      case "Meal":
+        return "Refeição.";
+      case "Mercado":
+        return "Mercado.";
+      case "Combustível":
+        return "Abastecimento do veículo.";
+      default:
+        return "";
     }
   }
 
@@ -516,8 +545,7 @@ function fillForm(data) {
 
     if (data.fileBase64 && data.fileName) {
       // Remove arquivos já anexados clicando em todos os botões "Remover"
-      const removerBtns = [...document.querySelectorAll("a, button, span")]
-        .filter((el) => el.textContent.trim() === "Remover");
+      const removerBtns = [...document.querySelectorAll("a, button, span")].filter((el) => el.textContent.trim() === "Remover");
 
       for (const btn of removerBtns) {
         btn.click();
@@ -527,16 +555,16 @@ function fillForm(data) {
       // Aguarda a UI limpar antes de adicionar o novo arquivo
       await delay(300);
 
-      const res  = await fetch(data.fileBase64);
+      const res = await fetch(data.fileBase64);
       const blob = await res.blob();
       const file = new File([blob], data.fileName, { type: "application/pdf" });
-      const dt   = new DataTransfer();
+      const dt = new DataTransfer();
       dt.items.add(file);
       const fileInput = document.querySelector('input[type="file"]');
       if (fileInput) {
         fileInput.files = dt.files;
         fileInput.dispatchEvent(new Event("change", { bubbles: true }));
-        fileInput.dispatchEvent(new Event("input",  { bubbles: true }));
+        fileInput.dispatchEvent(new Event("input", { bubbles: true }));
       }
     }
   })();
