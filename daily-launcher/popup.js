@@ -458,15 +458,7 @@ document.getElementById("btn-lancar").addEventListener("click", async () => {
   console.log("[lancar] dados:", { ...data, fileBase64: data.fileBase64 ? "[base64]" : null });
   setStatus("Preenchendo formulário...");
 
-  // Busca a aba do Mantis em qualquer janela (a extensão roda em janela própria)
-  let [tab] = await chrome.tabs.query({ url: "https://mantis-br.nttdata-solutions.com/*" });
-
-  if (!tab) {
-    // Fallback: aba ativa que não seja a própria extensão
-    const allActive = await chrome.tabs.query({ active: true });
-    tab = allActive.find((t) => !t.url?.startsWith("chrome-extension://"));
-  }
-
+  const tab = await getMantisTab();
   if (!tab) {
     setStatus("Nenhuma aba do Mantis encontrada.", true);
     return;
@@ -486,6 +478,56 @@ document.getElementById("btn-lancar").addEventListener("click", async () => {
     setStatus("Erro: " + err.message, true);
   }
 });
+
+// Busca a aba do Mantis em qualquer janela (a extensão roda em janela própria)
+async function getMantisTab() {
+  let [tab] = await chrome.tabs.query({ url: "https://mantis-br.nttdata-solutions.com/*" });
+
+  if (!tab) {
+    // Fallback: aba ativa que não seja a própria extensão
+    const allActive = await chrome.tabs.query({ active: true });
+    tab = allActive.find((t) => !t.url?.startsWith("chrome-extension://"));
+  }
+
+  return tab;
+}
+
+// Salvar
+document.getElementById("btn-salvar").addEventListener("click", async () => {
+  const tab = await getMantisTab();
+  if (!tab) {
+    setStatus("Nenhuma aba do Mantis encontrada.", true);
+    return;
+  }
+
+  try {
+    await chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      func: clickSalvarButton,
+    });
+    setStatus("Salvo!");
+  } catch (err) {
+    console.error("[salvar] erro:", err);
+    setStatus("Erro: " + err.message, true);
+  }
+});
+
+// Função injetada na página do Mantis para clicar no botão "Salvar"
+function clickSalvarButton() {
+  let btn = document.getElementById("cam-button-140");
+
+  if (!btn) {
+    // O id é gerado dinamicamente pelo Angular; busca por texto como fallback
+    btn = [...document.querySelectorAll("button.mat-success")].find((b) => b.textContent.trim() === "Salvar");
+  }
+
+  if (!btn) {
+    console.warn("Botão Salvar não encontrado");
+    return;
+  }
+
+  btn.click();
+}
 
 // Função injetada na página do Mantis (mesma lógica do fillDiaria.console.js)
 function fillForm(data) {
