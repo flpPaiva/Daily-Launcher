@@ -35,7 +35,7 @@
         gap: 10px;
       }
 
-      #btn-back {
+      .btn-back {
         background: none;
         border: 1px solid rgba(255,255,255,0.5);
         color: white;
@@ -47,9 +47,9 @@
         flex-shrink: 0;
       }
 
-      #btn-back:hover { background: rgba(255,255,255,0.15); }
+      .btn-back:hover { background: rgba(255,255,255,0.15); }
 
-      #btn-back * {font-size: 14px; vertical-align: middle; }
+      .btn-back * {font-size: 14px; vertical-align: middle; }
 
       /* ── Tela inicial ───────────────────────────────── */
 
@@ -250,6 +250,44 @@
       }
       .status.error { color: #e53935; }
 
+      /* ── Relatório de lançamentos ────────────────────── */
+
+      .report-empty {
+        text-align: center;
+        color: #777;
+        padding: 24px 0;
+        font-size: 12px;
+      }
+
+      .report-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+        display: none;
+      }
+      .report-table.visible { display: table; }
+
+      .report-table th {
+        text-align: left;
+        padding: 6px 4px;
+        border-bottom: 2px solid #ddd;
+        color: #555;
+      }
+
+      .report-table td {
+        padding: 6px 4px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .report-total {
+        margin-top: 10px;
+        font-weight: bold;
+        text-align: right;
+        font-size: 13px;
+        display: none;
+      }
+      .report-total.visible { display: block; }
+
       /* ── Modal de preview ───────────────────────────── */
 
       #preview-modal {
@@ -371,7 +409,7 @@
     <!-- ── Tela do lançador ──────────────────────────── -->
     <div id="screen-launcher" class="screen">
       <header>
-        <button id="btn-back"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;">arrow_back_ios_new</span></button>
+        <button class="btn-back" id="btn-back"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;">arrow_back_ios_new</span></button>
         Lançador de Diárias
       </header>
 
@@ -381,6 +419,10 @@
             Renomear arquivos para ordem númerica.
           </button>
           <div class="rename-status" id="rename-status"></div>
+
+          <button class="btn btn-secondary" id="btn-track-launches">
+            <span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;margin-right:4px;">fact_check</span>Acompanhar Lançamentos
+          </button>
         </div>
 
         <label class="upload-area" id="upload-area" for="file-input">
@@ -446,6 +488,35 @@
           <img src="https://authz-sefa.identidadedigital.pr.gov.br/cidadao_authz/image/favicon.ico" alt="" style="width:14px;height:14px;object-fit:contain;vertical-align:middle;margin-right:4px;" />Nota Paraná
         </button>
       </footer>
+    </div>
+
+    <!-- ── Tela de relatório de lançamentos ────────────── -->
+    <div id="screen-report" class="screen">
+      <header>
+        <button class="btn-back" id="btn-back-report"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;">arrow_back_ios_new</span></button>
+        Acompanhar Lançamentos
+      </header>
+
+      <div class="content">
+        <div class="report-empty" id="report-empty">Nenhum lançamento realizado nesta sessão.</div>
+        <table class="report-table" id="report-table">
+          <thead>
+            <tr>
+              <th>Arquivo</th>
+              <th>Nº NFe</th>
+              <th>Data</th>
+              <th>Valor</th>
+              <th>Tipo</th>
+              <th>Hora</th>
+            </tr>
+          </thead>
+          <tbody id="report-tbody"></tbody>
+        </table>
+        <div class="report-total" id="report-total"></div>
+
+        <hr class="divider" />
+        <button class="btn btn-secondary" id="btn-clear-report">Limpar histórico</button>
+      </div>
     </div>
 
     <!-- ── Modal de preview ──────────────────────────── -->

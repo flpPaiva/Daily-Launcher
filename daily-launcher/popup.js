@@ -86,6 +86,63 @@ document.getElementById("btn-back").addEventListener("click", () => {
   resetLauncher();
   showScreen("screen-home");
 });
+document.getElementById("btn-back-report").addEventListener("click", () => showScreen("screen-launcher"));
+document.getElementById("btn-track-launches").addEventListener("click", async () => {
+  await renderReport();
+  showScreen("screen-report");
+});
+document.getElementById("btn-clear-report").addEventListener("click", async () => {
+  await chrome.storage.session.remove("launchHistory");
+  await renderReport();
+});
+
+// ── Relatório de lançamentos ─────────────────────────────
+
+async function getLaunchHistory() {
+  const { launchHistory } = await chrome.storage.session.get("launchHistory");
+  return launchHistory || [];
+}
+
+async function addLaunchRecord(record) {
+  const history = await getLaunchHistory();
+  history.push(record);
+  await chrome.storage.session.set({ launchHistory: history });
+}
+
+async function renderReport() {
+  const history = await getLaunchHistory();
+  const empty = document.getElementById("report-empty");
+  const table = document.getElementById("report-table");
+  const tbody = document.getElementById("report-tbody");
+  const totalEl = document.getElementById("report-total");
+
+  tbody.innerHTML = "";
+
+  if (!history.length) {
+    empty.style.display = "block";
+    table.classList.remove("visible");
+    totalEl.classList.remove("visible");
+    return;
+  }
+
+  empty.style.display = "none";
+  table.classList.add("visible");
+
+  let total = 0;
+  for (const item of history) {
+    const tr = document.createElement("tr");
+    [item.fileName, item.code, item.date, item.vlTotal, item.type, item.time].forEach((value) => {
+      const td = document.createElement("td");
+      td.textContent = value || "-";
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+    total += parseFloat(String(item.vlTotal || "0").replace(",", ".")) || 0;
+  }
+
+  totalEl.textContent = `Total: ${total.toFixed(2).replace(".", ",")}`;
+  totalEl.classList.add("visible");
+}
 
 // Upload — sem fileInput.click() via JS (fecha popup no Chrome)
 const fileInput = document.getElementById("file-input");
@@ -255,6 +312,7 @@ document.getElementById("btn-renamer").addEventListener("click", async () => {
     await files[i].handle.move(`${i + 1}${files[i].ext}`);
   }
 
+  resetLauncher();
   setRenameStatus(`${files.length} arquivo(s) renomeados com sucesso.`);
 });
 
@@ -472,6 +530,16 @@ document.getElementById("btn-lancar").addEventListener("click", async () => {
       func: fillForm,
       args: [data],
     });
+
+    await addLaunchRecord({
+      fileName: data.fileName,
+      code: data.code,
+      date: data.date,
+      vlTotal: data.vlTotal,
+      type: data.type,
+      time: new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }),
+    });
+
     setStatus("Formulário preenchido!");
   } catch (err) {
     console.error("[lancar] erro:", err);
@@ -484,9 +552,9 @@ async function getMantisTab() {
   let [tab] = await chrome.tabs.query({ url: "https://mantis-br.nttdata-solutions.com/*" });
 
   if (!tab) {
-    // Fallback: aba ativa que não seja a própria extensão
+    // Fallback: aba ativa que seja uma página http(s) (exclui chrome://, chrome-extension://, etc.)
     const allActive = await chrome.tabs.query({ active: true });
-    tab = allActive.find((t) => !t.url?.startsWith("chrome-extension://"));
+    tab = allActive.find((t) => t.url?.startsWith("http"));
   }
 
   return tab;
