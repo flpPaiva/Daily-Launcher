@@ -10,13 +10,14 @@ chrome.action.onClicked.addListener(async () => {
   }
 
   const width = 340;
-  const height = 745;
   const margin = 20;
 
   const browserWin = await chrome.windows.getLastFocused({ windowTypes: ["normal"] });
 
+  // Usa toda a altura da janela do navegador
+  const height = browserWin.height - margin;
   const left = browserWin.left + browserWin.width - width - margin;
-  const top = browserWin.top + margin;
+  const top = browserWin.top;
 
   chrome.windows.create({
     url: popupUrl,

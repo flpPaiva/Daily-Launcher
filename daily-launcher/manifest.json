@@ -23,7 +23,7 @@
     "48":  "icon.png",
     "128": "icon.png"
   },
-  "permissions": ["activeTab", "scripting", "windows", "storage"],
+  "permissions": ["activeTab", "scripting", "windows", "storage", "downloads", "debugger"],
   "host_permissions": [
     "https://mantis-br.nttdata-solutions.com/*",
     "https://axet.nttdata.com/*",

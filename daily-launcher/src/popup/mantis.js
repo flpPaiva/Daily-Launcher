@@ -195,4 +195,75 @@ export function initMantisActions() {
       setStatus("Erro: " + err.message, true);
     }
   });
+
+  document.getElementById("btn-capture-pdf").addEventListener("click", async () => {
+    try {
+      // Pega todas as janelas para encontrar a janela normal (não popup)
+      const windows = await chrome.windows.getAll({ populate: true, windowTypes: ["normal"] });
+
+      let activeTab = null;
+      for (const window of windows) {
+        const tab = window.tabs.find((t) => t.active);
+        if (tab && tab.url?.startsWith("http")) {
+          activeTab = tab;
+          break;
+        }
+      }
+
+      if (!activeTab) {
+        setStatus("Nenhuma página web ativa encontrada.", true);
+        return;
+      }
+
+      setStatus("Capturando página em PDF...");
+
+      // Pega o contador atual
+      const stored = await chrome.storage.local.get("pdfCaptureCounter");
+      const counter = (stored.pdfCaptureCounter || 0) + 1;
+
+      // Salva o novo contador
+      await chrome.storage.local.set({ pdfCaptureCounter: counter });
+
+      // Anexa debugger à aba
+      const debuggee = { tabId: activeTab.id };
+      await chrome.debugger.attach(debuggee, "1.3");
+
+      try {
+        // Captura a página em PDF usando Chrome DevTools Protocol
+        const result = await chrome.debugger.sendCommand(debuggee, "Page.printToPDF", {
+          printBackground: true,
+          paperWidth: 8.27, // A4 width in inches
+          paperHeight: 11.69, // A4 height in inches
+          marginTop: 0.4,
+          marginBottom: 0.4,
+          marginLeft: 0.4,
+          marginRight: 0.4,
+        });
+
+        // Desanexa debugger
+        await chrome.debugger.detach(debuggee);
+
+        // Converte base64 para blob
+        const pdfData = Uint8Array.from(atob(result.data), (c) => c.charCodeAt(0));
+        const blob = new Blob([pdfData], { type: "application/pdf" });
+        const url = URL.createObjectURL(blob);
+
+        // Salva o arquivo
+        const fileName = `page-${String(counter).padStart(3, "0")}.pdf`;
+        await chrome.downloads.download({
+          url: url,
+          filename: fileName,
+          saveAs: false,
+        });
+
+        setStatus(`PDF salvo: ${fileName}`);
+      } catch (err) {
+        // Garante que o debugger seja desanexado mesmo em caso de erro
+        await chrome.debugger.detach(debuggee).catch(() => {});
+        throw err;
+      }
+    } catch (err) {
+      setStatus("Erro ao capturar PDF: " + err.message, true);
+    }
+  });
 }
