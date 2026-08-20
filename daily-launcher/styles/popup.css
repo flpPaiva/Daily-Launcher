@@ -1,0 +1,407 @@
+body {
+  width: 340px;
+  max-height: 580px;
+  overflow-y: auto;
+  font-size: 13px;
+}
+
+/* ── Telas ─────────────────────────────────────────────── */
+
+.screen {
+  display: none;
+}
+.screen.active {
+  display: block;
+}
+
+/* ── Header ────────────────────────────────────────────── */
+
+header {
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.header-title {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.brand-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-sm);
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.brand-text strong {
+  font-size: 14px;
+  font-weight: 700;
+}
+.brand-text span {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.75);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.btn-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  color: white;
+  border-radius: var(--radius-sm);
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background var(--transition-fast);
+}
+.btn-back:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+.btn-back .material-symbols-outlined {
+  font-size: 16px;
+}
+
+/* ── Tela inicial ──────────────────────────────────────── */
+
+.home-content {
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.home-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: 10px var(--space-3);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+.home-btn:hover {
+  border-color: var(--color-primary-border);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+.home-btn:active {
+  transform: translateY(0);
+}
+
+.icon-chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+.icon-chip img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+.icon-chip .material-symbols-outlined {
+  font-size: 18px;
+}
+
+.home-btn-label {
+  flex: 1;
+}
+
+.home-btn-chevron {
+  color: var(--color-text-muted);
+  font-size: 18px !important;
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+.home-btn:hover .home-btn-chevron {
+  color: var(--color-primary);
+  transform: translateX(2px);
+}
+
+/* ── Lançador ──────────────────────────────────────────── */
+
+.content {
+  padding: var(--space-3) var(--space-4);
+}
+
+.tools-section {
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.upload-area {
+  display: block;
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5) var(--space-3);
+  text-align: center;
+  cursor: pointer;
+  background: var(--color-surface);
+  margin-bottom: var(--space-2);
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+.upload-area:hover,
+.upload-area.drag-over {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+.upload-area.has-file {
+  border-color: var(--color-success);
+  border-style: solid;
+}
+.upload-area input[type="file"] {
+  display: none;
+}
+
+.upload-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  cursor: pointer;
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+.upload-icon {
+  font-size: 26px !important;
+  color: var(--color-primary);
+}
+.upload-hint {
+  font-size: 11px;
+  color: var(--color-text-muted);
+}
+
+.file-nav {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--color-primary-light);
+  border: 1px solid var(--color-primary-border);
+  border-radius: var(--radius-md);
+  padding: 6px 10px;
+  margin-bottom: var(--space-2);
+  font-size: 12px;
+}
+.file-nav.visible {
+  display: flex;
+}
+
+.file-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+}
+.file-nav-btn:hover {
+  background: var(--color-primary-dark);
+}
+.file-nav-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.file-nav-btn .material-symbols-outlined {
+  font-size: 16px;
+}
+
+.form-group {
+  margin-bottom: var(--space-3);
+}
+
+#form-section {
+  display: none;
+}
+#form-section.visible {
+  display: block;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.rename-status {
+  font-size: 11px;
+  text-align: center;
+  min-height: 16px;
+  color: var(--color-success);
+}
+.rename-status.error {
+  color: var(--color-danger);
+}
+
+.status {
+  font-size: 12px;
+  text-align: center;
+  min-height: 18px;
+  color: var(--color-success);
+  margin-bottom: var(--space-2);
+}
+.status.error {
+  color: var(--color-danger);
+}
+
+footer {
+  position: sticky;
+  bottom: 0;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  padding: var(--space-2) var(--space-4);
+  display: flex;
+  gap: var(--space-2);
+}
+
+.btn-link {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 4px;
+  border: 1px solid var(--color-primary-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-primary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: background var(--transition-fast);
+}
+.btn-link:hover {
+  background: var(--color-primary-light);
+}
+.btn-link .material-symbols-outlined {
+  font-size: 15px;
+}
+
+/* ── Relatório de lançamentos ──────────────────────────── */
+
+.report-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-muted);
+  padding: var(--space-6) 0;
+  font-size: 12px;
+}
+.report-empty .material-symbols-outlined {
+  font-size: 32px !important;
+  color: var(--color-border);
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  display: none;
+}
+.report-table.visible {
+  display: table;
+}
+
+.report-table th {
+  text-align: left;
+  padding: 6px 4px;
+  border-bottom: 2px solid var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.report-table td {
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--color-bg);
+}
+
+.report-table tbody tr:hover {
+  background: var(--color-primary-light);
+}
+
+.report-action-cell {
+  width: 30px;
+  text-align: center;
+}
+
+.btn-delete-record {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+.btn-delete-record:hover {
+  background: var(--color-danger);
+  color: white;
+}
+.btn-delete-record .material-symbols-outlined {
+  font-size: 16px !important;
+}
+
+.report-total {
+  margin-top: var(--space-3);
+  font-weight: 700;
+  text-align: right;
+  font-size: 13px;
+  color: var(--color-primary);
+  display: none;
+}
+.report-total.visible {
+  display: block;
+}

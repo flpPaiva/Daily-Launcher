@@ -9,6 +9,39 @@
 
 ---
 
+## Estrutura do projeto
+
+```
+daily-launcher/
+├── manifest.json         # Configuração da extensão (MV3)
+├── background.js         # Abre o popup como janela flutuante
+├── popup.html            # Tela principal (home, lançador, relatório)
+├── preview.html           # Janela de visualização do PDF
+├── icon.png               # Ícone da extensão
+├── pdf.min.mjs / pdf.worker.min.mjs   # PDF.js (vendor)
+├── styles/
+│   ├── theme.css          # Tokens de design (cores, espaçamento, tipografia) e componentes base
+│   ├── popup.css          # Estilos específicos do popup
+│   └── preview.css        # Estilos específicos da janela de preview
+└── src/
+    ├── popup/
+    │   ├── main.js         # Ponto de entrada — inicializa os demais módulos
+    │   ├── constants.js    # URLs externas e constantes do Mantis
+    │   ├── state.js        # Estado do arquivo/NFe selecionado
+    │   ├── navigation.js   # Troca de telas e abertura de links externos
+    │   ├── pdf.js           # Extração de dados da NFe (Nº, data, valor)
+    │   ├── launcher.js      # Upload, navegação entre arquivos, abertura do preview
+    │   ├── report.js        # Histórico de lançamentos da sessão
+    │   ├── renamer.js       # Renomeação da pasta de NFes em ordem numérica
+    │   └── mantis.js        # Preenchimento e envio do formulário no Mantis
+    └── preview/
+        └── main.js          # Renderização e zoom/pan do PDF na janela de preview
+```
+
+Cada módulo de `src/popup/` expõe uma função `init*()` chamada por `main.js` — não há efeitos colaterais escondidos em imports.
+
+---
+
 ## Como usar
 
 ### 1. Renomear arquivos da pasta de NFes (opcional)

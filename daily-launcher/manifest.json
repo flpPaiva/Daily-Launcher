@@ -1,7 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Lançador de Diárias",
-  "version": "1.0",
+  "version": "2.0.0",
+  "description": "Extrai dados de NFes e preenche o formulário de reembolso de diárias no Mantis, com atalhos para as ferramentas internas mais usadas.",
   "background": {
     "service_worker": "background.js"
   },
@@ -23,7 +24,16 @@
     "128": "icon.png"
   },
   "permissions": ["activeTab", "scripting", "windows", "storage"],
-  "host_permissions": ["https://mantis-br.nttdata-solutions.com/*"],
+  "host_permissions": [
+    "https://mantis-br.nttdata-solutions.com/*",
+    "https://axet.nttdata.com/*",
+    "https://ndbs.service-now.com/*",
+    "https://performancemanager5.successfactors.eu/*",
+    "https://eu.knowbe4.com/*",
+    "https://platform.senior.com.br/*",
+    "https://authz-sefa.identidadedigital.pr.gov.br/*",
+    "https://notaparana.pr.gov.br/*"
+  ],
   "web_accessible_resources": [
     {
       "resources": ["pdf.worker.min.mjs"],

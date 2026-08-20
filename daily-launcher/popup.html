@@ -1,407 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
   <head>
     <meta charset="utf-8" />
-    <title>NDBS Helpers</title>
+    <title>Daily Launcher</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
-    <style>
-      * { box-sizing: border-box; margin: 0; padding: 0; }
-
-      body {
-        width: 100%;
-        max-height: 580px;
-        overflow-y: auto;
-        font-family: sans-serif;
-        font-size: 13px;
-        background: #f5f5f5;
-        color: #333;
-      }
-
-      /* ── Telas ─────────────────────────────────────── */
-
-      .screen { display: none; }
-      .screen.active { display: block; }
-
-      /* ── Header ────────────────────────────────────── */
-
-      header {
-        background: #005b97;
-        color: white;
-        padding: 12px 16px;
-        font-weight: bold;
-        font-size: 14px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .btn-back {
-        background: none;
-        border: 1px solid rgba(255,255,255,0.5);
-        color: white;
-        border-radius: 4px;
-        padding: 3px 8px;
-        font-size: 13px;
-        cursor: pointer;
-        line-height: 1;
-        flex-shrink: 0;
-      }
-
-      .btn-back:hover { background: rgba(255,255,255,0.15); }
-
-      .btn-back * {font-size: 14px; vertical-align: middle; }
-
-      /* ── Tela inicial ───────────────────────────────── */
-
-      .home-content {
-        padding: 32px 24px;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .home-btn {
-        width: 100%;
-        padding: 14px 16px;
-        background: white;
-        border: 1px solid #005b97;
-        border-radius: 6px;
-        color: #005b97;
-        font-size: 13px;
-        font-weight: bold;
-        cursor: pointer;
-        text-align: left;
-        transition: background 0.15s;
-      }
-      .home-btn:hover { background: #eaf2fb; }
-
-      .home-btn-icon {
-        width: 18px;
-        height: 18px;
-        object-fit: contain;
-        vertical-align: middle;
-        margin-right: 8px;
-      }
-
-      /* ── Lançador ───────────────────────────────────── */
-
-      .content { padding: 12px 16px; }
-
-      .upload-area {
-        display: block;
-        border: 2px dashed #aaa;
-        border-radius: 6px;
-        padding: 20px;
-        text-align: center;
-        cursor: pointer;
-        background: white;
-        margin-bottom: 8px;
-        transition: border-color 0.2s;
-      }
-      .upload-area:hover { border-color: #005b97; }
-      .upload-area.has-file { border-color: #4caf50; border-style: solid; }
-      .upload-area input[type="file"] { display: none; }
-
-      .file-nav {
-        display: none;
-        align-items: center;
-        justify-content: space-between;
-        background: #e8f0fe;
-        border: 1px solid #c5d5f5;
-        border-radius: 6px;
-        padding: 6px 10px;
-        margin-bottom: 8px;
-        font-size: 12px;
-        color: #333;
-      }
-      .file-nav.visible { display: flex; }
-
-      .file-nav-btn {
-        background: #005b97;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        padding: 4px 10px;
-        font-size: 14px;
-        cursor: pointer;
-        line-height: 1;
-      }
-      .file-nav-btn:hover { background: #004a7c; }
-      .file-nav-btn:disabled { opacity: 0.4; cursor: default; }
-
-      .upload-label {
-        display: block;
-        cursor: pointer;
-        color: #666;
-      }
-      .upload-label span { display: block; font-size: 11px; margin-top: 4px; color: #999; }
-
-      .form-group { margin-bottom: 10px; }
-
-      label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 4px;
-        font-size: 12px;
-        color: #555;
-      }
-
-      input[type="text"],
-      select {
-        width: 100%;
-        padding: 6px 8px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 13px;
-        background: white;
-      }
-
-      input[type="text"]:focus,
-      select:focus {
-        outline: none;
-        border-color: #005b97;
-      }
-
-      #form-section { display: none; }
-      #form-section.visible {
-        display: block;
-        animation: fadeIn 0.2s ease;
-      }
-
-      @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(4px); }
-        to   { opacity: 1; transform: translateY(0); }
-      }
-
-      .divider {
-        border: none;
-        border-top: 1px solid #ddd;
-        margin: 12px 0;
-      }
-
-      .btn {
-        width: 100%;
-        padding: 10px;
-        border: none;
-        border-radius: 4px;
-        font-size: 13px;
-        font-weight: bold;
-        cursor: pointer;
-        margin-top: 4px;
-      }
-
-      .btn-primary { background: #005b97; color: white; }
-      .btn-primary:hover { background: #004a7c; }
-      .btn-success { background: #4caf50; color: white; }
-      .btn-success:hover { background: #3d8b40; }
-      .btn-secondary {
-        background: white;
-        color: #005b97;
-        border: 1px solid #005b97;
-        margin-top: 6px;
-      }
-      .btn-secondary:hover { background: #eaf2fb; }
-
-      footer {
-        position: sticky;
-        bottom: 0;
-        background: white;
-        border-top: 1px solid #ddd;
-        padding: 8px 16px;
-        display: flex;
-        gap: 8px;
-      }
-
-      .btn-link {
-        flex: 1;
-        padding: 7px 4px;
-        border: 1px solid #005b97;
-        border-radius: 4px;
-        background: white;
-        color: #005b97;
-        font-size: 12px;
-        font-weight: bold;
-        cursor: pointer;
-        text-align: center;
-      }
-      .btn-link:hover { background: #eaf2fb; }
-
-      .tools-section {
-        margin-bottom: 10px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #ddd;
-      }
-
-      .rename-status {
-        font-size: 11px;
-        text-align: center;
-        margin-top: 5px;
-        min-height: 16px;
-        color: #4caf50;
-      }
-      .rename-status.error { color: #e53935; }
-
-      .status {
-        font-size: 12px;
-        text-align: center;
-        min-height: 18px;
-        color: #4caf50;
-        margin-bottom: 8px;
-      }
-      .status.error { color: #e53935; }
-
-      /* ── Relatório de lançamentos ────────────────────── */
-
-      .report-empty {
-        text-align: center;
-        color: #777;
-        padding: 24px 0;
-        font-size: 12px;
-      }
-
-      .report-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 12px;
-        display: none;
-      }
-      .report-table.visible { display: table; }
-
-      .report-table th {
-        text-align: left;
-        padding: 6px 4px;
-        border-bottom: 2px solid #ddd;
-        color: #555;
-      }
-
-      .report-table td {
-        padding: 6px 4px;
-        border-bottom: 1px solid #eee;
-      }
-
-      .report-total {
-        margin-top: 10px;
-        font-weight: bold;
-        text-align: right;
-        font-size: 13px;
-        display: none;
-      }
-      .report-total.visible { display: block; }
-
-      /* ── Modal de preview ───────────────────────────── */
-
-      #preview-modal {
-        display: none;
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.7);
-        z-index: 100;
-        flex-direction: column;
-      }
-      #preview-modal.open { display: flex; }
-
-      #preview-modal-header {
-        background: #005b97;
-        color: white;
-        padding: 8px 12px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 13px;
-        font-weight: bold;
-        flex-shrink: 0;
-      }
-
-      #btn-close-preview {
-        background: none;
-        border: none;
-        color: white;
-        font-size: 18px;
-        cursor: pointer;
-        line-height: 1;
-        padding: 0 4px;
-      }
-
-      #preview-scroll {
-        overflow: auto;
-        flex: 1;
-        background: #555;
-        padding: 8px;
-        cursor: grab;
-        user-select: none;
-      }
-
-      #preview-scroll.dragging { cursor: grabbing; }
-
-      #preview-canvas {
-        display: block;
-        background: white;
-        pointer-events: none;
-      }
-
-      #preview-nav {
-        background: #333;
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 6px 10px;
-        font-size: 12px;
-        flex-shrink: 0;
-        gap: 6px;
-      }
-
-      .nav-group {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-      }
-
-      #preview-nav button {
-        background: #555;
-        border: none;
-        color: white;
-        padding: 4px 9px;
-        border-radius: 3px;
-        cursor: pointer;
-        font-size: 13px;
-        line-height: 1;
-      }
-      #preview-nav button:hover { background: #777; }
-      #preview-nav button:disabled { opacity: 0.4; cursor: default; }
-
-      #zoom-level { font-size: 11px; min-width: 36px; text-align: center; }
-    </style>
+    <link rel="stylesheet" href="styles/theme.css" />
+    <link rel="stylesheet" href="styles/popup.css" />
   </head>
   <body>
-
     <!-- ── Tela inicial ──────────────────────────────── -->
     <div id="screen-home" class="screen active">
-      <header>NDBS Helpers</header>
+      <header>
+        <img src="icon.png" alt="" class="brand-icon" />
+        <div class="brand-text">
+          <strong>Daily Launcher</strong>
+          <span>Ferramentas NDBS</span>
+        </div>
+      </header>
       <div class="home-content">
         <button class="home-btn" id="btn-go-launcher">
-          <img src="icon.png" alt="" class="home-btn-icon" />Lançador de Diárias
+          <span class="icon-chip"><img src="icon.png" alt="" /></span>
+          <span class="home-btn-label">Lançador de Diárias</span>
+          <span class="material-symbols-outlined home-btn-chevron">chevron_right</span>
         </button>
         <button class="home-btn" id="btn-apontamento">
-          <img src="https://mantis-br.nttdata-solutions.com/app/assets/img/logo/favicon.png" alt="" class="home-btn-icon" />Apontamento de Atividades
+          <span class="icon-chip"><span class="material-symbols-outlined">schedule</span></span>
+          <span class="home-btn-label">Apontamento de Atividades</span>
+          <span class="material-symbols-outlined home-btn-chevron">chevron_right</span>
         </button>
         <button class="home-btn" id="btn-senior-x">
-          <img src="assets/media/seniorX.png" alt="" class="home-btn-icon" />Senior-X
+          <span class="icon-chip"><span class="material-symbols-outlined">badge</span></span>
+          <span class="home-btn-label">Senior-X</span>
+          <span class="material-symbols-outlined home-btn-chevron">chevron_right</span>
         </button>
         <button class="home-btn" id="btn-mantis-home">
-          <img src="https://mantis-br.nttdata-solutions.com/app/assets/img/logo/favicon.png" alt="" class="home-btn-icon" />Mantis
+          <span class="icon-chip"><span class="material-symbols-outlined">dashboard</span></span>
+          <span class="home-btn-label">Mantis</span>
+          <span class="material-symbols-outlined home-btn-chevron">chevron_right</span>
         </button>
         <button class="home-btn" id="btn-axet">
-          <img src="https://axet.nttdata.com/home/favicon.ico" alt="" class="home-btn-icon" />IA - Axet
+          <span class="icon-chip"><span class="material-symbols-outlined">smart_toy</span></span>
+          <span class="home-btn-label">IA - Axet</span>
+          <span class="material-symbols-outlined home-btn-chevron">chevron_right</span>
         </button>
         <button class="home-btn" id="btn-servicenow">
-          <img src="assets/media/service_now.png" alt="" class="home-btn-icon" />Service Now
+          <span class="icon-chip"><span class="material-symbols-outlined">support_agent</span></span>
+          <span class="home-btn-label">Service Now</span>
+          <span class="material-symbols-outlined home-btn-chevron">chevron_right</span>
         </button>
         <button class="home-btn" id="btn-successfactors">
-          <img src="https://www.sap.com/favicon.ico" alt="" class="home-btn-icon" />Success Factors
+          <span class="icon-chip"><span class="material-symbols-outlined">groups</span></span>
+          <span class="home-btn-label">Success Factors</span>
+          <span class="material-symbols-outlined home-btn-chevron">chevron_right</span>
         </button>
         <button class="home-btn" id="btn-knowbe4">
-          <img src="https://eu.knowbe4.com/lx/favicon.ico" alt="" class="home-btn-icon" />KnowBe4
+          <span class="icon-chip"><span class="material-symbols-outlined">school</span></span>
+          <span class="home-btn-label">KnowBe4</span>
+          <span class="material-symbols-outlined home-btn-chevron">chevron_right</span>
         </button>
       </div>
     </div>
@@ -409,53 +64,60 @@
     <!-- ── Tela do lançador ──────────────────────────── -->
     <div id="screen-launcher" class="screen">
       <header>
-        <button class="btn-back" id="btn-back"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;">arrow_back_ios_new</span></button>
-        Lançador de Diárias
+        <button class="btn-back" id="btn-back" aria-label="Voltar">
+          <span class="material-symbols-outlined">arrow_back</span>
+        </button>
+        <span class="header-title">Lançador de Diárias</span>
       </header>
 
       <div class="content">
         <div class="tools-section">
-          <button class="btn btn-secondary" id="btn-renamer" style="margin-top:0">
-            Renomear arquivos para ordem númerica.
+          <button class="btn btn-secondary btn-sm" id="btn-renamer">
+            <span class="material-symbols-outlined">sort</span>Renomear arquivos para ordem numérica
           </button>
           <div class="rename-status" id="rename-status"></div>
 
-          <button class="btn btn-secondary" id="btn-track-launches">
-            <span class="material-symbols-outlined" style="font-size:14px;vertical-align:middle;margin-right:4px;">fact_check</span>Acompanhar Lançamentos
+          <button class="btn btn-secondary btn-sm" id="btn-track-launches">
+            <span class="material-symbols-outlined">fact_check</span>Acompanhar Lançamentos
           </button>
         </div>
 
         <label class="upload-area" id="upload-area" for="file-input">
           <span class="upload-label">
-            📄 Clique para selecionar o PDF
-            <span>ou arraste aqui</span>
+            <span class="material-symbols-outlined upload-icon">upload_file</span>
+            Clique para selecionar o PDF
+            <span class="upload-hint">ou arraste aqui</span>
           </span>
           <input type="file" id="file-input" accept=".pdf" multiple />
         </label>
 
         <div class="file-nav" id="file-nav">
-          <button class="file-nav-btn" id="btn-prev-file">&#9664;</button>
+          <button class="file-nav-btn" id="btn-prev-file" aria-label="Arquivo anterior">
+            <span class="material-symbols-outlined">chevron_left</span>
+          </button>
           <span id="file-nav-info">Arquivo 1 de 1</span>
-          <button class="file-nav-btn" id="btn-next-file">&#9654;</button>
+          <button class="file-nav-btn" id="btn-next-file" aria-label="Próximo arquivo">
+            <span class="material-symbols-outlined">chevron_right</span>
+          </button>
         </div>
 
         <div class="status" id="status"></div>
 
         <div id="form-section">
           <div class="form-group">
-            <label>Nº NFe</label>
+            <label class="field-label">Nº NFe</label>
             <input type="text" id="f-code" />
           </div>
           <div class="form-group">
-            <label>Data</label>
+            <label class="field-label">Data</label>
             <input type="text" id="f-date" placeholder="DD/MM/AAAA" />
           </div>
           <div class="form-group">
-            <label>Valor</label>
+            <label class="field-label">Valor</label>
             <input type="text" id="f-vlTotal" placeholder="0.00" />
           </div>
           <div class="form-group">
-            <label>Tipo</label>
+            <label class="field-label">Tipo</label>
             <select id="f-type">
               <option value="Meal">Meal</option>
               <option value="Mercado">Mercado</option>
@@ -463,7 +125,7 @@
             </select>
           </div>
           <div class="form-group">
-            <label>Prioridade</label>
+            <label class="field-label">Prioridade</label>
             <select id="f-priority">
               <option value="Mínima">Mínima</option>
               <option value="Baixa">Baixa</option>
@@ -474,18 +136,24 @@
           </div>
 
           <hr class="divider" />
-          <button class="btn btn-secondary" id="btn-preview">Visualizar NFe</button>
-          <button class="btn btn-primary" id="btn-lancar">Lançar Diária</button>
-          <button class="btn btn-success" id="btn-salvar">Salvar</button>
+          <button class="btn btn-secondary" id="btn-preview">
+            <span class="material-symbols-outlined">visibility</span>Visualizar NFe
+          </button>
+          <button class="btn btn-primary" id="btn-lancar">
+            <span class="material-symbols-outlined">edit_document</span>Lançar Diária
+          </button>
+          <button class="btn btn-success" id="btn-salvar">
+            <span class="material-symbols-outlined">save</span>Salvar
+          </button>
         </div>
       </div>
 
       <footer>
         <button class="btn-link" id="btn-mantis">
-          <img src="https://mantis-br.nttdata-solutions.com/app/assets/img/logo/favicon.png" alt="" style="width:14px;height:14px;object-fit:contain;vertical-align:middle;margin-right:4px;" />Reembolso de Diárias
+          <span class="material-symbols-outlined">receipt_long</span>Reembolso de Diárias
         </button>
         <button class="btn-link" id="btn-nota-parana">
-          <img src="https://authz-sefa.identidadedigital.pr.gov.br/cidadao_authz/image/favicon.ico" alt="" style="width:14px;height:14px;object-fit:contain;vertical-align:middle;margin-right:4px;" />Nota Paraná
+          <span class="material-symbols-outlined">storefront</span>Nota Paraná
         </button>
       </footer>
     </div>
@@ -493,12 +161,17 @@
     <!-- ── Tela de relatório de lançamentos ────────────── -->
     <div id="screen-report" class="screen">
       <header>
-        <button class="btn-back" id="btn-back-report"><span class="material-symbols-outlined" style="font-size:16px;vertical-align:middle;">arrow_back_ios_new</span></button>
-        Acompanhar Lançamentos
+        <button class="btn-back" id="btn-back-report" aria-label="Voltar">
+          <span class="material-symbols-outlined">arrow_back</span>
+        </button>
+        <span class="header-title">Acompanhar Lançamentos</span>
       </header>
 
       <div class="content">
-        <div class="report-empty" id="report-empty">Nenhum lançamento realizado nesta sessão.</div>
+        <div class="report-empty" id="report-empty">
+          <span class="material-symbols-outlined">inbox</span>
+          Nenhum lançamento realizado nesta sessão.
+        </div>
         <table class="report-table" id="report-table">
           <thead>
             <tr>
@@ -508,6 +181,7 @@
               <th>Valor</th>
               <th>Tipo</th>
               <th>Hora</th>
+              <th></th>
             </tr>
           </thead>
           <tbody id="report-tbody"></tbody>
@@ -515,36 +189,12 @@
         <div class="report-total" id="report-total"></div>
 
         <hr class="divider" />
-        <button class="btn btn-secondary" id="btn-clear-report">Limpar histórico</button>
+        <button class="btn btn-secondary" id="btn-clear-report">
+          <span class="material-symbols-outlined">delete_sweep</span>Limpar histórico
+        </button>
       </div>
     </div>
 
-    <!-- ── Modal de preview ──────────────────────────── -->
-    <div id="preview-modal">
-      <div id="preview-modal-header">
-        <span id="preview-filename">NFe</span>
-        <button id="btn-close-preview">✕</button>
-      </div>
-      <div id="preview-scroll">
-        <canvas id="preview-canvas"></canvas>
-      </div>
-      <div id="preview-nav">
-        <div class="nav-group">
-          <button id="btn-prev-page">◀</button>
-          <span id="page-info">1 / 1</span>
-          <button id="btn-next-page">▶</button>
-        </div>
-        <div class="nav-group">
-          <button id="btn-zoom-out">−</button>
-          <span id="zoom-level">100%</span>
-          <button id="btn-zoom-in">+</button>
-        </div>
-        <div class="nav-group">
-          <button id="btn-close-preview-nav">✕ Fechar</button>
-        </div>
-      </div>
-    </div>
-
-    <script type="module" src="popup.js"></script>
+    <script type="module" src="src/popup/main.js"></script>
   </body>
 </html>
