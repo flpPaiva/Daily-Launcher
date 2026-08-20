@@ -165,6 +165,10 @@ header {
   gap: var(--space-2);
 }
 
+.tools-section .btn + .btn {
+  margin-top: 0;
+}
+
 .upload-area {
   display: block;
   border: 2px dashed var(--color-border);
@@ -271,8 +275,12 @@ header {
 .rename-status {
   font-size: 11px;
   text-align: center;
-  min-height: 16px;
   color: var(--color-success);
+  margin: 0;
+  padding: 0;
+}
+.rename-status:empty {
+  display: none;
 }
 .rename-status.error {
   color: var(--color-danger);
